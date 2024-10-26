@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="655.0" prefWidth="600.0" styleClass="addEmployeeForm" stylesheets="@design.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="addEmployeeController">
+   <children>
+      <AnchorPane prefHeight="108.0" prefWidth="600.0" styleClass="addEmployee-header" stylesheets="@dashboard.css">
+         <children>
+            <Label layoutX="30.0" layoutY="32.0" text="Add Employee" textFill="WHITE">
+               <font>
+                  <Font name="Berlin Sans FB Demi Bold" size="38.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <TextField fx:id="lastName" layoutX="309.0" layoutY="137.0" prefHeight="42.0" prefWidth="255.0" promptText="Last Name" styleClass="login-textfield" stylesheets="@design.css" />
+      <TextField fx:id="firstName" layoutX="38.0" layoutY="137.0" prefHeight="42.0" prefWidth="255.0" promptText="First Name" styleClass="login-textfield" stylesheets="@design.css" />
+      <TextField fx:id="email" layoutX="35.0" layoutY="209.0" prefHeight="42.0" prefWidth="529.0" promptText="Email" styleClass="login-textfield" stylesheets="@design.css" />
+      <TextField fx:id="phone" layoutX="35.0" layoutY="279.0" prefHeight="42.0" prefWidth="529.0" promptText="Phone" styleClass="login-textfield" stylesheets="@design.css" />
+      <TextField fx:id="jobTitle" layoutX="35.0" layoutY="350.0" prefHeight="42.0" prefWidth="529.0" promptText="Job Title" styleClass="login-textfield" stylesheets="@design.css" />
+      <ComboBox fx:id="department" layoutX="35.0" layoutY="424.0" prefHeight="42.0" prefWidth="529.0" promptText="Department" styleClass="departmentComboBox" stylesheets="@dashboard.css" />
+      <Button fx:id="confirm_btn" layoutX="420.0" layoutY="583.0" mnemonicParsing="false" onAction="#addEmployee" prefHeight="42.0" prefWidth="148.0" styleClass="confirmButton" stylesheets="@dashboard.css" text="CONFIRM" textFill="WHITE">
+         <font>
+            <Font name="Berlin Sans FB Demi Bold" size="19.0" />
+         </font>
+      </Button>
+      <Button fx:id="cancel_btn" layoutX="258.0" layoutY="583.0" mnemonicParsing="false" onAction="#cancelButton" prefHeight="42.0" prefWidth="148.0" styleClass="cancelButton" stylesheets="@dashboard.css" text="CANCEL" textFill="WHITE">
+         <font>
+            <Font name="Berlin Sans FB Demi Bold" size="19.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

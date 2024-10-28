@@ -3,6 +3,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -85,8 +87,7 @@ public class addEmployeeController implements Initializable {
     }
 
 
-    public void addEmployee(){
-
+    public void addEmployee(ActionEvent event){
         Employee employee = new Employee();
         employee.setFirstName(firstName.getText());
         employee.setLastName(lastName.getText());
@@ -103,9 +104,28 @@ public class addEmployeeController implements Initializable {
         employee.setHireDate(LocalDate.now());
 
         EmployeeDAO emp = new EmployeeDAO();
-        emp.addEmployee(employee);
-        System.out.println("Employee added");
+        if(emp.isAddEmployeeSuccessful(employee)){
+            System.out.println("Employee added");
+            firstName.setText("");
+            lastName.setText("");
+            jobTitle.setText("");
+            phone.setText("");
+            email.setText("");
 
+            Stage stage = (Stage) confirm_btn.getScene().getWindow();
+            stage.close();
+        }
+        else{
+
+            Alert alert = new Alert(AlertType.ERROR);
+            
+            alert.setTitle("Message!");
+            alert.setHeaderText(null);
+            alert.setContentText("Email Already Exists!");
+            alert.showAndWait();
+        }
+        
+        
     }
 
     @Override

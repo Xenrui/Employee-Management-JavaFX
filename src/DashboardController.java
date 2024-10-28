@@ -234,7 +234,6 @@ public class DashboardController implements Initializable {
 
         // Apply the CSS to the root scene
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("design.css").toExternalForm());
         stage.setScene(scene);
 
         stage.initModality(Modality.WINDOW_MODAL);

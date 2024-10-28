@@ -7,8 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="655.0" prefWidth="600.0" styleClass="addEmployeeForm" stylesheets="@design.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="addEmployeeController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="655.0" prefWidth="600.0" styleClass="custom-stage" stylesheets="@design.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="addEmployeeController">
    <children>
       <AnchorPane prefHeight="108.0" prefWidth="600.0" styleClass="addEmployee-header" stylesheets="@dashboard.css">
          <children>

@@ -30,12 +30,12 @@
                </font>
             </Label>
             <Button fx:id="dash_btn" layoutY="239.0" mnemonicParsing="false" onAction="#navButton" prefHeight="40.0" prefWidth="180.0" styleClass="dashButton" stylesheets="@dashboard.css" text="Dashboard" textAlignment="CENTER" textFill="WHITE">
-               <graphic>
-                  <FontAwesomeIcon fx:id="dashicon" fill="WHITE" glyphName="DASHBOARD" text="" textAlignment="RIGHT" wrappingWidth="2.4000287055969807" />
-               </graphic>
                <font>
                   <Font name="Berlin Sans FB Demi Bold" size="16.0" />
                </font>
+               <graphic>
+                  <FontAwesomeIcon fx:id="dashicon" fill="WHITE" glyphName="HOME" textAlignment="RIGHT" wrappingWidth="4.457118511199951" />
+               </graphic>
             </Button>
             <Button fx:id="employee_btn" layoutY="279.0" mnemonicParsing="false" onAction="#navButton" prefHeight="40.0" prefWidth="180.0" styleClass="dashButton" stylesheets="@dashboard.css" text="Employees" textAlignment="CENTER" textFill="WHITE">
                <font>

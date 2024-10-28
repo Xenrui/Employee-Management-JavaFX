@@ -4,7 +4,7 @@ import java.util.List;
 
 public class EmployeeDAO {
     
-    public void addEmployee(Employee employee){
+    public boolean isAddEmployeeSuccessful(Employee employee){
         String sql = "INSERT INTO employees (first_name, last_name, email, phone_number, hire_date, job_title, department_id) VALUES (?,?,?,?,?,?,?)";
         
         try(Connection conn = DatabaseConnection.getConnection();
@@ -19,14 +19,18 @@ public class EmployeeDAO {
                 stmt.setInt(7, employee.getDepartmentID());
 
                 stmt.executeUpdate();
+				
 
         } catch (SQLException e){
             if (e.getSQLState().equals("23000")) {
 				System.err.println("Error: Duplicate entry for email '" + employee.getEmail() + "'. Please use a different email.");
+				return false;
 			} else {
 				e.printStackTrace();
+				return false;
 			}
         }
+		return true;
     }
 
     public List<Employee> getAllEmployees() {

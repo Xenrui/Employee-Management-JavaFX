@@ -10,6 +10,7 @@ public class Employee {
     private String jobTitle;
     private float salary;
     private int departmentID;
+	private String departmentName;
 
     public int getEmployeeID(){
 		return ID;
@@ -37,6 +38,9 @@ public class Employee {
 	}
 	public int getDepartmentID(){
 		return departmentID;
+	}
+	public String getDepartmentName(){
+		return departmentName;
 	}
 
 
@@ -67,6 +71,9 @@ public class Employee {
 	}
 	public void setDepartmentID(int departmentID){
 		this.departmentID = departmentID;
+	}
+	public void setDepartmentName(String departmentName){
+		this.departmentName = departmentName; 
 	}
 }
 

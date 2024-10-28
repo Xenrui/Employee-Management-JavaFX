@@ -1,3 +1,10 @@
+import java.net.URL;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.time.LocalDate;
+import java.util.ResourceBundle;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -9,22 +16,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
 
-import javax.swing.Action;
-
-import java.sql.Statement;
-import java.net.URL;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.time.LocalDate;
-
-
-public class addEmployeeController implements Initializable {
+public class editEmployeeController implements Initializable {
 
     @FXML
     private Button cancel_btn;
@@ -50,12 +43,12 @@ public class addEmployeeController implements Initializable {
     @FXML
     private TextField phone;
 
+    private int employeeID;
     private DashboardController dashboardController;
 
     public void setDashboardController(DashboardController controller) {
         this.dashboardController = controller; // Store the reference
     }
-    
 
     public void cancelButton(ActionEvent event){
         firstName.setText("");
@@ -69,6 +62,65 @@ public class addEmployeeController implements Initializable {
         stage.close();
     }
 
+    public void editEmployee(Employee employee){
+        employeeID = employee.getEmployeeID();
+        firstName.setText(employee.getFirstName());
+        lastName.setText(employee.getLastName());
+        email.setText(employee.getEmail());
+        phone.setText(employee.getPhoneNum());
+        jobTitle.setText(employee.getJobTitle());
+
+        Department selectedDepartment = new Department(employee.getDepartmentID(), employee.getDepartmentName());
+        department.setValue(selectedDepartment);
+    }
+    
+    public void updateEmployee(ActionEvent event){
+        
+        Employee employee = new Employee();
+        employee.setFirstName(firstName.getText());
+        employee.setLastName(lastName.getText());
+        employee.setEmail(email.getText());
+        employee.setPhoneNum(phone.getText());
+        employee.setJobTitle(jobTitle.getText());
+        employee.setEmployeeID(employeeID);
+        Department selectedDepartment = department.getSelectionModel().getSelectedItem();
+
+        if (selectedDepartment != null) {
+            employee.setDepartmentID(selectedDepartment.getId());
+            employee.setDepartmentName(selectedDepartment.getName()); 
+        } else {
+            System.out.println("Please select a department.");
+            return;
+        }
+
+        EmployeeDAO emp = new EmployeeDAO();
+        if(emp.isUpdateEmployeeSuccessful(employee)){
+            System.out.println("Employee added");
+
+            if (dashboardController != null) {
+                dashboardController.loadEmployeeData(); // Refresh the TableView
+            }    
+
+            firstName.setText("");
+            lastName.setText("");
+            jobTitle.setText("");
+            phone.setText("");
+            email.setText("");
+
+            Stage stage = (Stage) confirm_btn.getScene().getWindow();
+            stage.close();
+        }
+        else{
+
+            Alert alert = new Alert(AlertType.ERROR);
+            
+            alert.setTitle("Message!");
+            alert.setHeaderText(null);
+            alert.setContentText("Edit Employee Failed");
+            alert.showAndWait();
+        } 
+    }
+    
     private void loadDepartments() {
         ObservableList<Department> departments = FXCollections.observableArrayList();
         String query = "SELECT department_id, department_name FROM departments"; // Adjust query as needed
@@ -95,57 +147,8 @@ public class addEmployeeController implements Initializable {
         department.setItems(departments);
     }
 
-    public void addEmployee(ActionEvent event){
-        
-        Employee employee = new Employee();
-        employee.setFirstName(firstName.getText());
-        employee.setLastName(lastName.getText());
-        employee.setEmail(email.getText());
-        employee.setPhoneNum(phone.getText());
-        employee.setJobTitle(jobTitle.getText());
-        Department selectedDepartment = department.getSelectionModel().getSelectedItem();
-
-        if (selectedDepartment != null) {
-            employee.setDepartmentID(selectedDepartment.getId());
-            employee.setDepartmentName(selectedDepartment.getName()); 
-        } else {
-            System.out.println("Please select a department.");
-            return;
-        }
-        
-        employee.setHireDate(LocalDate.now());
-
-        EmployeeDAO emp = new EmployeeDAO();
-        if(emp.isAddEmployeeSuccessful(employee)){
-            System.out.println("Employee added");
-
-            if (dashboardController != null) {
-                dashboardController.loadEmployeeData(); // Refresh the TableView
-            }
-
-            firstName.setText("");
-            lastName.setText("");
-            jobTitle.setText("");
-            phone.setText("");
-            email.setText("");
-
-            Stage stage = (Stage) confirm_btn.getScene().getWindow();
-            stage.close();
-        }
-        else{
-
-            Alert alert = new Alert(AlertType.ERROR);
-            
-            alert.setTitle("Message!");
-            alert.setHeaderText(null);
-            alert.setContentText("Email Already Exists!");
-            alert.showAndWait();
-        } 
-        
-    }
-
     @Override
-    public void initialize(URL url, ResourceBundle resource){
-        loadDepartments();
+    public void initialize(URL location, ResourceBundle resources) {
+       loadDepartments();
     }
 }

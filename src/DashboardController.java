@@ -1,5 +1,7 @@
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,8 +11,10 @@ import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -18,10 +22,12 @@ import javafx.scene.paint.Paint;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
+import de.jensd.fx.glyphs.fontawesome.*;
 import java.lang.classfile.components.ClassPrinter.Node;
 import java.net.URL;
 import java.util.ResourceBundle;
+import de.jensd.*;
+import javax.swing.Action;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 
@@ -59,28 +65,34 @@ public class DashboardController implements Initializable {
     private Label user;
     
     @FXML
-    private TableView<?> employeeTable;
+    private TableView<Employee> employeeTable;
     
     @FXML
-    private TableColumn<?, ?> employeeID_col;
+    private TableColumn<Employee, Integer> employeeID_col;
     
     @FXML
     private TableColumn<?, ?> employeeName_col;
-    
+
     @FXML
-    private TableColumn<?, ?> employeeEmail_col;
+    private TableColumn<Employee, String> firstName_col;
+
+    @FXML
+    private TableColumn<Employee, String> lastName_col;
+
+    @FXML
+    private TableColumn<Employee, String> employeeEmail_col;
    
     @FXML
-    private TableColumn<?, ?> employeePhone_col;
+    private TableColumn<Employee, String> employeePhone_col;
 
     @FXML
-    private TableColumn<?, ?> employeeDept_col;
+    private TableColumn<Employee, String> employeeDept_col;
 
     @FXML
-    private TableColumn<?, ?> employeeJob_col;
+    private TableColumn<Employee, String> employeeJob_col;
 
     @FXML
-    private TableColumn<?, ?> actions_col;
+    private TableColumn<Employee, String> actions_col;
 
     @FXML
     private Button addEmployee_btn;
@@ -108,6 +120,8 @@ public class DashboardController implements Initializable {
     private AnchorPane activeForm = null;
     private double x = 0;
     private double y = 0;
+    private ObservableList<Employee> employeeList;
+    
 
     public void exit(){
         System.exit(0);
@@ -115,6 +129,62 @@ public class DashboardController implements Initializable {
 
     private void user(){
         user.setText(UserDAO.username);
+    }
+    
+    public void employeePieChart(PieChart employeePie){
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
+            new PieChart.Data("Category 1", 40),
+            new PieChart.Data("Category 2", 30),
+            new PieChart.Data("Category 3", 20),
+            new PieChart.Data("Category 4", 10)
+        
+        );
+        employeePie.setData(pieChartData);
+        
+    }
+
+    private void initTable(){
+        employeeID_col.setCellValueFactory(new PropertyValueFactory<>("employeeID"));
+        firstName_col.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+        lastName_col.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        employeeEmail_col.setCellValueFactory(new PropertyValueFactory<>("email"));
+        employeePhone_col.setCellValueFactory(new PropertyValueFactory<>("phoneNum"));
+        employeeDept_col.setCellValueFactory(new PropertyValueFactory<>("departmentName"));
+        employeeJob_col.setCellValueFactory(new PropertyValueFactory<>("jobTitle"));
+
+        actions_col.setCellFactory(param -> new TableCell<>() {
+            private final Button editButton = new Button();
+            private FontAwesomeIcon editIcon = new FontAwesomeIcon();
+       
+            {
+                editIcon.setGlyphName("EDIT");
+    
+                editButton.setGraphic(editIcon);
+                editButton.setOnAction(event -> {
+                    Employee employee = getTableView().getItems().get(getIndex());
+                    editEmployee(event, employee);
+                    System.out.println("Editing employee: " + employee.getFirstName());
+                    
+                });
+            }
+
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(editButton);
+                }
+            }
+        });
+        loadEmployeeData();
+    }
+
+    public void loadEmployeeData(){
+        
+        employeeList = new EmployeeDAO().getAllEmployees();
+        employeeTable.setItems(employeeList);
     }
     
     private void alterAddEmployeeIcon(Button button, FontAwesomeIcon icon){
@@ -227,10 +297,57 @@ public class DashboardController implements Initializable {
     public void defaultHomeDesign(){
             selectButton(dash_btn, dashicon, dashboard_form);
     }
+    public void editEmployee(ActionEvent event, Employee employee){
+        try {
+            Stage stage = new Stage();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("editEmp.fxml"));
+            Parent root = loader.load();
+
+
+            editEmployeeController controller = loader.getController();
+            controller.editEmployee(employee);
+            controller.setDashboardController(this);
+            // Apply the CSS to the root scene
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(((javafx.scene.Node) event.getSource()).getScene().getWindow());
+
+            // Handle window dragging
+            root.setOnMousePressed((MouseEvent mouseEvent) -> {
+                x = mouseEvent.getSceneX();
+                y = mouseEvent.getSceneY();
+            });
+
+            root.setOnMouseDragged((MouseEvent mouseEvent) -> {
+                stage.setX(mouseEvent.getScreenX() - x);
+                stage.setY(mouseEvent.getScreenY() - y);
+                stage.setOpacity(0.9);
+            });
+
+            root.setOnMouseReleased((MouseEvent mouseEvent) -> {
+                stage.setOpacity(1);
+            });
+
+            // Set stage style to transparent to allow for rounded corners
+            stage.initStyle(StageStyle.TRANSPARENT);
+            stage.show();
+
+            Platform.runLater(root::requestFocus);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public void addEmployee(ActionEvent actionEvent) throws Exception {
         Stage stage = new Stage();
-        Parent root = FXMLLoader.load(getClass().getResource("addEmp.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("addEmp.fxml"));
+        Parent root = loader.load();
+
+        addEmployeeController controller = loader.getController();
+        controller.setDashboardController(this);
 
         // Apply the CSS to the root scene
         Scene scene = new Scene(root);
@@ -269,6 +386,8 @@ public class DashboardController implements Initializable {
         navButton();
         defaultHomeDesign();
         user();
+        employeePieChart(employeePie);
+        initTable();
     }
 
 }

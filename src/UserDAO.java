@@ -4,8 +4,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import com.mysql.cj.protocol.Resultset;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
@@ -22,7 +20,7 @@ public class UserDAO {
             pstmt.setString(2, password);
             
 
-            Resultset rs = (Resultset) pstmt.executeQuery();
+            ResultSet rs = pstmt.executeQuery();
 
             if(((ResultSet) rs).next()){
                 return true;

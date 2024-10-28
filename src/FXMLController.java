@@ -156,7 +156,7 @@ public class FXMLController {
             alert.setHeaderText(null);
             alert.setContentText("Incorrect Username/Password!");
             
-            ImageView graphic = new ImageView(new Image("alertIcon.png"));
+            ImageView graphic = new ImageView(new Image("images/alertIcon.png"));
             graphic.setFitWidth(50);
             graphic.setFitHeight(50);
             alert.setGraphic(graphic);

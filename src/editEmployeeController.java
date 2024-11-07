@@ -2,9 +2,7 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.time.LocalDate;
 import java.util.ResourceBundle;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -70,7 +68,11 @@ public class editEmployeeController implements Initializable {
         phone.setText(employee.getPhoneNum());
         jobTitle.setText(employee.getJobTitle());
 
-        Department selectedDepartment = new Department(employee.getDepartmentID(), employee.getDepartmentName());
+        
+        Department selectedDepartment = new Department();
+        selectedDepartment.setDepartmentID(employee.getDepartmentID());
+        selectedDepartment.setDepartmentName(employee.getDepartmentName()); 
+
         department.setValue(selectedDepartment);
     }
     
@@ -123,7 +125,7 @@ public class editEmployeeController implements Initializable {
     
     private void loadDepartments() {
         ObservableList<Department> departments = FXCollections.observableArrayList();
-        String query = "SELECT department_id, department_name FROM departments"; // Adjust query as needed
+        String query = "SELECT department_id, department_name FROM departments WHERE active = true"; // Adjust query as needed
  
         try {
             // Establish the connection
@@ -135,9 +137,10 @@ public class editEmployeeController implements Initializable {
             
         // Process the ResultSet
             while (resultSet.next()) {
-                int id = resultSet.getInt("department_id");
-                String departmentName = resultSet.getString("department_name");
-                departments.add(new Department(id, departmentName));
+                Department department = new Department();
+                department.setDepartmentID(resultSet.getInt("department_id"));
+                department.setDepartmentName(resultSet.getString("department_name"));
+                departments.add(department);
             }
             
         } catch (Exception e) {

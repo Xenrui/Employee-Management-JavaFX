@@ -8,15 +8,15 @@ import javafx.stage.StageStyle;
 import javafx.scene.input.MouseEvent;
 
 public class App extends Application {
-    
+
     private double x = 0;
     private double y = 0;
-     
+    
     @Override
     public void start(Stage stage) throws Exception {
-       Parent root = FXMLLoader.load(getClass().getResource("FXML.fxml"));
-       
-       Scene scene = new Scene(root);
+        Parent root = FXMLLoader.load(getClass().getResource("FXML.fxml"));
+        
+        Scene scene = new Scene(root);
        
         root.setOnMousePressed((MouseEvent event) ->{
             
@@ -46,13 +46,14 @@ public class App extends Application {
         stage.show();
     }
 
+    
     /**
      * @param args the command line arguments
      */
+    
     public static void main(String[] args) {
         launch(args);
 
-        
     }
     
 }

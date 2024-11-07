@@ -1,7 +1,4 @@
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -27,13 +24,15 @@ public class EmployeeDAO {
         } catch (SQLException e){
             if (e.getSQLState().equals("23000")) {
 				System.err.println("Error: Duplicate entry for email '" + employee.getEmail() + "'. Please use a different email.");
-				return false;
+
 			} else {
 				e.printStackTrace();
 			}
+            return false;
         }
 		return true;
     }
+
 	public boolean isUpdateEmployeeSuccessful(Employee employee) {
         String updateQuery = "UPDATE employees SET first_name = ?, last_name = ?, email = ?, phone_number = ?, job_title = ?, department_id = ? WHERE employee_id = ?";
         
@@ -61,6 +60,22 @@ public class EmployeeDAO {
         }
 	}
 
+    public boolean isDeleteEmployeeSuccessful(Employee employee){
+        String query = "DELETE FROM employees where employee_id = ?";
+
+        try(Connection conn = DatabaseConnection.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(query)){
+                stmt.setInt(1, employee.getEmployeeID());
+
+                int affectedRows = stmt.executeUpdate();
+                
+                return affectedRows > 0;
+            } catch (SQLException e){
+                e.printStackTrace();
+                return false; 
+            }
+    }
+
     public ObservableList<Employee> getAllEmployees() {
 		ObservableList<Employee> employees = FXCollections.observableArrayList();
 		String sql = "SELECT * FROM employees";
@@ -68,7 +83,6 @@ public class EmployeeDAO {
 		try (Connection conn = DatabaseConnection.getConnection();
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(sql)) {
-				
 
 				while (rs.next()) {
 					Employee employee = new Employee();

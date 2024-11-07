@@ -9,18 +9,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
-
-import javax.swing.Action;
-
 import java.sql.Statement;
 import java.net.URL;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDate;
 
 
@@ -71,7 +64,7 @@ public class addEmployeeController implements Initializable {
 
     private void loadDepartments() {
         ObservableList<Department> departments = FXCollections.observableArrayList();
-        String query = "SELECT department_id, department_name FROM departments"; // Adjust query as needed
+        String query = "SELECT department_id, department_name FROM departments WHERE active = true"; // Adjust query as needed
  
         try {
             // Establish the connection
@@ -83,9 +76,10 @@ public class addEmployeeController implements Initializable {
             
         // Process the ResultSet
             while (resultSet.next()) {
-                int id = resultSet.getInt("department_id");
-                String departmentName = resultSet.getString("department_name");
-                departments.add(new Department(id, departmentName));
+                Department department = new Department();
+                department.setDepartmentID(resultSet.getInt("department_id"));
+                department.setDepartmentName(resultSet.getString("department_name"));
+                departments.add(department);
             }
             
         } catch (Exception e) {
@@ -94,6 +88,7 @@ public class addEmployeeController implements Initializable {
 
         department.setItems(departments);
     }
+
 
     public void addEmployee(ActionEvent event){
         

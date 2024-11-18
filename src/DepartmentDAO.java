@@ -8,7 +8,7 @@ import javafx.collections.ObservableList;
 
 public class DepartmentDAO {
 
-    public String getDepartmentNameById(int departmentId) {
+    public static String getDepartmentNameById(int departmentId) {
         String departmentName = null;
         String query = "SELECT department_name FROM departments WHERE department_id = ?";
 
@@ -28,10 +28,33 @@ public class DepartmentDAO {
         return departmentName;
     }
 
+    public static Department getDepartmentById(int id) {
+        // Replace with your database query logic
+        // Example:
+        Department department = null;
+        String query = "SELECT * FROM departments WHERE department_id = " + id;
+
+        try (Connection connection = DatabaseConnection.getConnection(); 
+             Statement statement = connection.createStatement(); 
+             ResultSet resultSet = statement.executeQuery(query)) {
+
+            if (resultSet.next()) {
+                department = new Department();
+                department.setDepartmentID(resultSet.getInt("department_id"));
+                department.setDepartmentName(resultSet.getString("department_name"));
+                department.setDescription(resultSet.getString("department_description"));
+                department.setActive(resultSet.getBoolean("active"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return department;
+    }
 
     public static ObservableList<Department> getAllDepartment() {
         ObservableList<Department> departments = FXCollections.observableArrayList();
-        String query = "SELECT department_id, department_name, active FROM departments"; // Adjust query as needed
+        String query = "SELECT department_id, department_name, department_description, active FROM departments"; // Adjust query as needed
  
         try {
             // Establish the connection
@@ -46,6 +69,7 @@ public class DepartmentDAO {
                 Department department = new Department();
                 department.setDepartmentID(resultSet.getInt("department_id"));
                 department.setDepartmentName(resultSet.getString("department_name"));
+                department.setDescription(resultSet.getString("department_description"));
                 department.setActive(resultSet.getBoolean("active"));
                 departments.add(department);
             }
@@ -57,9 +81,9 @@ public class DepartmentDAO {
         return departments;
     }
     
-    public ObservableList<Department> getActiveDepartments() {
+    public static ObservableList<Department> getActiveDepartments() {
         ObservableList<Department> departments = FXCollections.observableArrayList();
-        String query = "SELECT department_id, department_name FROM departments WHERE active = true"; // Adjust query as needed
+        String query = "SELECT department_id, department_name, department_description FROM departments WHERE active = true"; // Adjust query as needed
  
         try {
             // Establish the connection
@@ -74,6 +98,7 @@ public class DepartmentDAO {
                 Department department = new Department();
                 department.setDepartmentID(resultSet.getInt("department_id"));
                 department.setDepartmentName(resultSet.getString("department_name"));
+                department.setDescription(resultSet.getString("department_description"));
                 departments.add(department);
             }
             
@@ -103,16 +128,17 @@ public class DepartmentDAO {
     }
 
     public boolean isUpdateDepartmentSuccessful(Department department){
-        String query = "UPDATE departments SET department_name = ?, active = ? WHERE department_id = ?";
+        String query = "UPDATE departments SET department_name = ?, department_description = ?, active = ? WHERE department_id = ?";
 
         try(Connection conn = DatabaseConnection.getConnection();
             PreparedStatement stmt = conn.prepareStatement(query)){
                 stmt.setString(1, department.getName());
-                stmt.setBoolean(2, department.getActive());
-                stmt.setInt(3, department.getId());
+                stmt.setString(2, department.getDescription());
+                stmt.setBoolean(3, department.getActive());
+                stmt.setInt(4, department.getId());
 
                 int affectedRows = stmt.executeUpdate();
-
+                System.out.println("Affected rows: " + affectedRows);
                 return affectedRows > 0;
         } catch (SQLException e){
             System.err.println("Error updating department with ID " + department.getId());

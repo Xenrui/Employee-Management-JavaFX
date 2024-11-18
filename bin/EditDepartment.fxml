@@ -8,11 +8,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="563.0" prefWidth="600.0" styleClass="custom-stage" stylesheets="@design.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="addDepartmentController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="563.0" prefWidth="600.0" styleClass="custom-stage" stylesheets="@design.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="editDepartmentController">
    <children>
       <AnchorPane prefHeight="108.0" prefWidth="600.0" styleClass="addEmployee-header" stylesheets="@dashboard.css">
          <children>
-            <Label layoutX="30.0" layoutY="32.0" text="Add Department" textFill="WHITE">
+            <Label layoutX="30.0" layoutY="32.0" text="Edit Department" textFill="WHITE">
                <font>
                   <Font name="Berlin Sans FB Demi Bold" size="38.0" />
                </font>

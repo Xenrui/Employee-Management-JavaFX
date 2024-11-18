@@ -26,9 +26,14 @@ public class AlertController {
     private Label cancelMessage;
 
     private DashboardController dashboardController;
+    private departmentDetailsController deptdetailController;
 
     public void setDashboardController(DashboardController controller) {
         this.dashboardController = controller; // Store the reference
+    }
+
+    public void setDeleteDepartmentCont(departmentDetailsController controller){
+        this.deptdetailController = controller;
     }
     
     public void setHeader(String header){
@@ -76,12 +81,16 @@ public class AlertController {
             DepartmentDAO dep = new DepartmentDAO();
             if(dep.isDeleteDepartmentSuccessful(department)){
                 System.out.println("Department Deleted Successfully");
-                if(dashboardController != null){
-                    dashboardController.loadDepartmentData();
+                
+                if(deptdetailController != null){
+                    System.out.println("Department updated Successfully");
+                    deptdetailController.refreshDepartmentDetails();
+                    deptdetailController.exit();
                 }
                 
                 Stage stage = (Stage) alertConfirmButton.getScene().getWindow();
                 stage.close();
+
             } else {
                 Alert alert = new Alert(AlertType.ERROR);
                 

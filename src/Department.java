@@ -3,6 +3,7 @@ public class Department {
     private int id;
     private String name;
     private boolean isActive;
+    private String description;
 
 
     public void setDepartmentID(int id){
@@ -17,6 +18,10 @@ public class Department {
         this.isActive = isActive;
     }
 
+    public void setDescription(String description){
+        this.description = description;
+    }
+
     public int getId() {
         return id;
     }
@@ -29,6 +34,9 @@ public class Department {
         return name;
     }
 
+    public String getDescription(){
+        return description;
+    }
     
     @Override
     public String toString() {

@@ -92,3 +92,15 @@
     -fx-font-size: 14px; /* Change legend font size */
     -fx-text-fill: #666; /* Change legend color */
 }
+
+.departmentActive{
+    
+    -fx-background-color:linear-gradient(to right, #41c660,#838383 ,#fefefe);
+    
+}
+
+.departmentActive{
+    
+    -fx-background-color:linear-gradient(to right, #dc543c,#838383, #fefefe);
+    
+}

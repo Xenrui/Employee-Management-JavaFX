@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.javafx.controller.FXMLController">
+   <children>
+      <AnchorPane fx:id="login_form" prefHeight="500.0" prefWidth="800.0">
+         <children>
+            <AnchorPane prefHeight="500.0" prefWidth="400.0" styleClass="login-bg" stylesheets="@/main/resources/css/design.css" />
+            <AnchorPane layoutX="400.0" prefHeight="500.0" prefWidth="400.0">
+               <children>
+                <Button fx:id="login_btn" layoutX="67.0" layoutY="345.0" mnemonicParsing="false" onAction="#login" prefHeight="32.0" prefWidth="266.0" styleClass="button-login" stylesheets="@/main/resources/css/design.css" text="LOGIN" textFill="WHITE">
+                     <font>
+                        <Font name="Berlin Sans FB Demi Bold" size="15.0" />
+                     </font>
+                  </Button>
+                <Button fx:id="exit_btn" layoutX="354.40000000000003" layoutY="-1.8" mnemonicParsing="false" onAction="#exit" prefHeight="32.0" prefWidth="46.0" styleClass="exit" stylesheets="@/main/resources/css/design.css" textFill="WHITE" AnchorPane.rightAnchor="-0.8000000000000114" AnchorPane.topAnchor="-1.8">
+                     <graphic>
+                        <FontAwesomeIcon fill="WHITE" glyphName="CLOSE" selectionFill="#f25757" />
+                     </graphic>
+                  </Button>
+                  <FontAwesomeIcon fill="#114e86" glyphName="USER" layoutX="158.0" layoutY="134.0" size="9em" text="" AnchorPane.rightAnchor="157.14286041259766" />
+                  <Label alignment="CENTER" layoutX="90.0" layoutY="149.0" prefHeight="62.0" prefWidth="219.0" text="FCK DSA" textFill="#114e86">
+                     <font>
+                        <Font name="Berlin Sans FB" size="54.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="username_login" layoutX="67.0" layoutY="250.0" prefHeight="32.0" prefWidth="266.0" promptText="Username" styleClass="login-textfield" stylesheets="@/main/resources/css/design.css" />
+                  <PasswordField fx:id="password_login" layoutX="67.0" layoutY="292.0" prefHeight="32.0" prefWidth="266.0" promptText="Password" styleClass="login-textfield" stylesheets="@/main/resources/css/design.css" />
+                  <Hyperlink fx:id="register" layoutX="105.0" layoutY="383.0" onAction="#changeForm" styleClass="register-hypertext" stylesheets="@/main/resources/css/design.css" text="Don't have an account? Register">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Hyperlink>
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="signup_form" prefHeight="500.0" prefWidth="800.0" visible="false">
+         <children>
+            <AnchorPane prefHeight="500.0" prefWidth="400.0">
+               <children>
+                  <Button fx:id="signup_btn" layoutX="66.0" layoutY="382.0" mnemonicParsing="false" onAction="#signup" prefHeight="32.0" prefWidth="266.0" styleClass="button-login" stylesheets="@/main/resources/css/design.css" text="SIGN UP" textFill="WHITE">
+                     <font>
+                        <Font name="Berlin Sans FB Demi Bold" size="15.0" />
+                     </font>
+                  </Button>
+                  <FontAwesomeIcon fill="#114e86" glyphName="USER" layoutX="158.0" layoutY="134.0" size="9em" text="" AnchorPane.rightAnchor="157.14286041259766" />
+                  <Label alignment="CENTER" layoutX="90.0" layoutY="149.0" prefHeight="62.0" prefWidth="219.0" text="FCK DSA" textFill="#114e86">
+                     <font>
+                        <Font name="Berlin Sans FB" size="54.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="username_signup" layoutX="66.0" layoutY="284.0" prefHeight="32.0" prefWidth="266.0" promptText="Username" styleClass="login-textfield" stylesheets="@/main/resources/css/design.css" />
+                  <PasswordField fx:id="password_signup" layoutX="67.0" layoutY="326.0" prefHeight="32.0" prefWidth="266.0" promptText="Password" styleClass="login-textfield" stylesheets="@/main/resources/css/design.css" />
+                  <TextField fx:id="email_signup" layoutX="66.0" layoutY="242.0" prefHeight="32.0" prefWidth="266.0" promptText="Email" styleClass="login-textfield" stylesheets="@/main/resources/css/design.css" />
+                  <Hyperlink fx:id="login_hyp" layoutX="105.0" layoutY="420.0" onAction="#changeForm" styleClass="register-hypertext" stylesheets="@/main/resources/css/design.css" text="Already have an Account? Login">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Hyperlink>
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="400.0" prefHeight="500.0" prefWidth="400.0" styleClass="login-bg" stylesheets="@/main/resources/css/design.css">
+               <children>
+                  <Button fx:id="exit_btn1" mnemonicParsing="false" onAction="#exit" prefHeight="32.0" prefWidth="46.0" styleClass="exit" stylesheets="@/main/resources/css/design.css" textFill="WHITE" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <graphic>
+                        <FontAwesomeIcon fill="WHITE" glyphName="CLOSE" selectionFill="#f25757" />
+                     </graphic>
+                  </Button>
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

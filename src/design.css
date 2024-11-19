@@ -1,0 +1,101 @@
+
+.login-bg{
+    
+    -fx-background-color:linear-gradient(to bottom right, #03305a, #00d4ff);
+    
+}
+
+.exit{
+    -fx-background-color:#ff3434;
+    -fx-background-radius:5px;
+    -fx-cursor:hand;
+}
+
+.exit:hover{
+    -fx-background-color:#c96d6d;
+}
+
+.login-textfield{
+    -fx-background-color: transparent;
+    -fx-background-radius: 10px;
+    -fx-border-color:linear-gradient(to bottom right, #1f1fc1, #00d4ff);
+    -fx-border-radius: 10px;
+
+    -fx-text-inner-color: #000;
+    
+}
+
+.login-textfield:focused{
+    -fx-background-color: transparent;
+    -fx-background-radius: 10px;
+    -fx-border-color:linear-gradient(to bottom right, #1f1fc1, #00d4ff);
+    -fx-border-radius: 10px;
+    -fx-border-width: 2px;
+    -fx-text-inner-color: #000;
+}
+
+
+.button-login{
+    -fx-background-color:linear-gradient(to bottom right, #1f1fc1, #00d4ff);
+    -fx-background-radius: 10px;
+    -fx-cursor: hand;
+}
+
+.button-login:hover{
+    -fx-background-color:linear-gradient(to bottom right, #3e3ec9, #39deff);
+
+}
+.register-hypertext{
+    -fx-text-fill:#5185C5;
+    -fx-cursor: hand;
+    -fx-underline:true;
+    -fx-border-color: transparent;
+}
+
+.register-hypertext:hover{
+    -fx-text-fill:#6aadff;
+}
+
+.custom-stage{
+
+    -fx-background-color: white; /* Background color for the scene */
+    -fx-border-color: linear-gradient(to right, #03305a, #00d4ff); /* Same gradient for consistency */
+    -fx-border-width: 3px; /* Border thickness */
+
+}
+
+
+.dashboard-elements{
+ 
+    -fx-background-color:linear-gradient(to top, #03305a, #00d4ff);
+    -fx-border-color: #fff;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 12px;
+    
+}
+
+.pie-chart {
+    -fx-background-color: transparent; /* Make background transparent */
+    -fx-border-color: linear-gradient(to top, #03305a, #00d4ff); /* Set border color */
+    -fx-border-width: 2px; /* Set border width */
+    -fx-border-style: solid; /* Set border style */
+    -fx-border-radius: 10px;
+    -fx-padding: 10; 
+}
+
+.pie-chart .chart-title {
+    -fx-font-size: 25px; /* Change title font size */
+    -fx-text-fill: #333; /* Change title color */
+}
+
+.pie-chart .chart-legend {
+    -fx-font-size: 14px; /* Change legend font size */
+    -fx-text-fill: #666; /* Change legend color */
+}
+
+.departmentContainer-header{
+ 
+        -fx-background-color:#076ac8;
+        -fx-border-width: 3px;
+    
+}

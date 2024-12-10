@@ -1,5 +1,7 @@
 package main.java.javafx.controller;
 
+import javafx.animation.Transition;
+import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +20,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 import main.java.javafx.dao.UserDAO;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -63,6 +66,9 @@ public class FXMLController {
     @FXML
     private TextField username_signup;
 
+    @FXML
+    private ImageView logo;
+
 
     private double x = 0;
     private double y = 0;
@@ -70,19 +76,32 @@ public class FXMLController {
     public void exit(){
         System.exit(0);
     }
+
     public void changeForm(ActionEvent event){
+        TranslateTransition loginTransition = new TranslateTransition();
+        loginTransition.setDuration(Duration.seconds(0.7));
+        loginTransition.setNode(login_form);
+
+        TranslateTransition logoTransition = new TranslateTransition();
+        logoTransition.setDuration(Duration.seconds(1));
+        logoTransition.setNode(logo);
 
         if(event.getSource() == register){
-            signup_form.setVisible(true);
-            login_form.setVisible(false);
+            loginTransition.setToX(800);
+            loginTransition.play();
+            logoTransition.setToX(-400);
+            logoTransition.play();
 
             username_signup.setText("");
             password_signup.setText("");
             email_signup.setText("");
+
         }
         else if(event.getSource() == signup_btn || event.getSource() == login_hyp){
-            login_form.setVisible(true);
-            signup_form.setVisible(false);
+            loginTransition.setToX(0);
+            loginTransition.play();
+            logoTransition.setToX(0);
+            logoTransition.play();
             
             username_login.setText("");
             password_login.setText("");
@@ -116,8 +135,6 @@ public class FXMLController {
         if(user.loginUser(username, password)){
 
             UserDAO.username = username;
-            
-            login_btn.getScene().getWindow().hide();
 
             Parent root = FXMLLoader.load(getClass().getResource("/main/resources/fxml/Dashboard.FXML"));
             Stage stage = new Stage();
@@ -146,9 +163,9 @@ public class FXMLController {
             });
             
             stage.initStyle(StageStyle.TRANSPARENT);
-            
             stage.setScene(scene);
             stage.show();
+            login_btn.getScene().getWindow().hide();
             }
 
         else{

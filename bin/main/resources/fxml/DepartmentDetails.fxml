@@ -10,62 +10,68 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="692.0" prefWidth="966.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.javafx.controller.departmentDetailsController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="692.0" prefWidth="966.0" styleClass="custom-stage" stylesheets="@../css/design.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.javafx.controller.departmentDetailsController">
    <children>
-      <Label layoutX="39.0" layoutY="126.0" text="About Us:">
+      <AnchorPane prefHeight="110.0" prefWidth="966.0" styleClass="addEmployee-header" stylesheets="@../css/dashboard.css">
+         <children>
+            <FontAwesomeIcon fx:id="statusIcon" layoutX="853.0" layoutY="72.0" />
+         </children>
+      </AnchorPane>
+      <Label layoutX="39.0" layoutY="126.0" prefHeight="34.0" prefWidth="157.0" text="About Us:">
          <font>
-            <Font size="16.0" />
+            <Font name="Berlin Sans FB Demi Bold" size="21.0" />
          </font></Label>
-      <Label fx:id="departmentNameLabel" layoutX="42.0" layoutY="31.0" stylesheets="@/main/resources/css/design.css" text="Department Title">
+      <Label fx:id="departmentNameLabel" layoutX="42.0" layoutY="31.0" prefHeight="44.0" prefWidth="462.0" stylesheets="@/main/resources/css/design.css" text="Department Title" textFill="WHITE">
          <font>
-            <Font size="38.0" />
+            <Font name="Berlin Sans FB Demi Bold" size="38.0" />
          </font>
       </Label>
-      <Label fx:id="departmentDetailsLabel" alignment="TOP_LEFT" layoutX="74.0" layoutY="158.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="123.0" prefWidth="822.0" text="Label" wrapText="true" />
-      <TableView layoutX="337.0" layoutY="341.0" prefHeight="324.0" prefWidth="614.0">
+      <Label fx:id="departmentDetailsLabel" alignment="TOP_LEFT" layoutX="62.0" layoutY="177.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="123.0" prefWidth="822.0" text="Label" wrapText="true">
+         <font>
+            <Font name="Bell MT" size="15.0" />
+         </font></Label>
+      <TableView fx:id="employeeTable" layoutX="419.0" layoutY="341.0" prefHeight="324.0" prefWidth="532.0" styleClass="setFocus" stylesheets="@../css/design.css">
         <columns>
-          <TableColumn prefWidth="295.2000427246094" text="Employee" />
-          <TableColumn prefWidth="406.3999938964844" text="Job Title" />
+          <TableColumn fx:id="employeeName_col" prefWidth="275.20001220703125" text="Employee" />
+          <TableColumn fx:id="jobTitle_col" prefWidth="256.0" text="Job Title" />
         </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
       </TableView>
-      <Button fx:id="editDepartment_btn" layoutX="837.0" layoutY="86.0" mnemonicParsing="false" onAction="#editDepartment" prefHeight="34.0" prefWidth="46.0" styleClass="addButton" stylesheets="@/main/resources/css/dashboard.css">
+      <Button fx:id="editDepartment_btn" layoutX="837.0" layoutY="120.0" mnemonicParsing="false" onAction="#editDepartment" prefHeight="34.0" prefWidth="46.0" styleClass="addButton" stylesheets="@../css/dashboard.css">
          <graphic>
             <FontAwesomeIcon fx:id="editDepartment_icon" fill="WHITE" glyphName="EDIT" size="2EM" stroke="#ffffff00" />
          </graphic>
       </Button>
-      <Button fx:id="deleteDepartment_btn" layoutX="896.0" layoutY="86.0" mnemonicParsing="false" onAction="#deleteDepartment" prefHeight="34.0" prefWidth="46.0" styleClass="cancelButton" stylesheets="@/main/resources/css/dashboard.css">
+      <Button fx:id="deleteDepartment_btn" layoutX="896.0" layoutY="120.0" mnemonicParsing="false" onAction="#deleteDepartment" prefHeight="34.0" prefWidth="46.0" styleClass="cancelButton" stylesheets="@../css/dashboard.css">
          <graphic>
             <FontAwesomeIcon fx:id="deleteDepartment_icon" fill="WHITE" glyphName="TRASH" size="2EM" stroke="#ffffff00" />
          </graphic>
       </Button>
-      <Button fx:id="exit_btn" layoutX="921.0" layoutY="-1.0" mnemonicParsing="false" onAction="#exit" prefHeight="32.0" prefWidth="46.0" styleClass="exit" stylesheets="@/main/resources/css/design.css" textFill="WHITE">
+      <Button fx:id="exit_btn" layoutX="921.0" layoutY="-1.0" mnemonicParsing="false" onAction="#exit" prefHeight="32.0" prefWidth="46.0" styleClass="exit" stylesheets="@../css/design.css" textFill="WHITE">
          <graphic>
             <FontAwesomeIcon fill="WHITE" glyphName="CLOSE" selectionFill="#f25757" />
          </graphic>
       </Button>
-      <Label layoutX="42.0" layoutY="303.0" text="Projects">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <ScrollPane hbarPolicy="NEVER" layoutX="62.0" layoutY="340.0" prefHeight="324.0" prefWidth="255.0" vbarPolicy="ALWAYS">
+      <ScrollPane hbarPolicy="NEVER" layoutX="62.0" layoutY="340.0" prefHeight="324.0" prefWidth="347.0" styleClass="setFocus" stylesheets="@../css/design.css" vbarPolicy="ALWAYS">
          <content>
-            <VBox prefHeight="228.0" prefWidth="226.0" />
+            <VBox fx:id="projectContainer" prefHeight="63.0" prefWidth="332.0" />
          </content>
       </ScrollPane>
-      <Label layoutX="644.0" layoutY="32.0" text="0">
+      <Label fx:id="deparmentEmployeeNum" alignment="CENTER_RIGHT" layoutX="553.0" layoutY="20.0" prefHeight="63.0" prefWidth="176.0" text="111" textAlignment="CENTER" textFill="WHITE">
          <font>
-            <Font size="36.0" />
+            <Font name="Bell MT Bold" size="52.0" />
          </font>
       </Label>
-      <Label layoutX="671.0" layoutY="51.0" text="employee/s">
+      <Label layoutX="736.0" layoutY="52.0" text="employee/s" textFill="WHITE">
          <font>
-            <Font size="18.0" />
+            <Font name="Berlin Sans FB Demi Bold" size="18.0" />
          </font>
       </Label>
-      <Label layoutX="823.0" layoutY="38.0" text="Active">
+      <Label layoutX="39.0" layoutY="301.0" prefHeight="34.0" prefWidth="157.0" text="Projects:">
          <font>
-            <Font size="28.0" />
+            <Font name="Berlin Sans FB Demi Bold" size="21.0" />
          </font>
       </Label>
    </children>

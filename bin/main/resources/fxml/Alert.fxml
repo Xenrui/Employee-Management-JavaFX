@@ -5,9 +5,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="190.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.javafx.controller.AlertController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="190.0" prefWidth="400.0" styleClass="custom-stage" stylesheets="@../css/design.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.javafx.controller.AlertController">
    <children>
-      <AnchorPane layoutY="-4.0" prefHeight="66.0" prefWidth="400.0" styleClass="addEmployee-header" stylesheets="@/main/resources/css/dashboard.css">
+      <AnchorPane layoutY="-4.0" prefHeight="66.0" prefWidth="400.0" styleClass="addEmployee-header" stylesheets="@../css/dashboard.css">
          <children>
             <Label fx:id="alertHeader" layoutX="14.0" layoutY="11.0" prefHeight="44.0" prefWidth="370.0" text="Delete" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                <font>
@@ -16,7 +16,7 @@
             </Label>
          </children>
       </AnchorPane>
-      <Button fx:id="alertConfirmButton" layoutX="267.0" layoutY="137.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="118.0" stylesheets="@/main/resources/css/dashboard.css" textFill="WHITE">
+      <Button fx:id="alertConfirmButton" layoutX="267.0" layoutY="137.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="118.0" stylesheets="@../css/dashboard.css" textFill="WHITE">
          <font>
             <Font name="Berlin Sans FB Demi Bold" size="14.0" />
          </font>
@@ -40,7 +40,7 @@
             </Label>
          </graphic>
       </Button>
-      <Label fx:id="alertMessage" layoutX="29.0" layoutY="73.0" prefHeight="44.0" prefWidth="342.0" text="Are you sure you want to delete?" textAlignment="CENTER" wrapText="true">
+      <Label fx:id="alertMessage" layoutX="29.0" layoutY="73.0" prefHeight="57.0" prefWidth="342.0" text="Are you sure you want to delete?" textAlignment="CENTER" wrapText="true">
          <font>
             <Font name="Arial" size="15.0" />
          </font>

@@ -9,8 +9,10 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import main.java.javafx.dao.DepartmentDAO;
 import main.java.javafx.dao.EmployeeDAO;
+import main.java.javafx.dao.ProjectDAO;
 import main.java.javafx.model.Department;
 import main.java.javafx.model.Employee;
+import main.java.javafx.model.Project;
 
 public class AlertController {
     @FXML
@@ -107,6 +109,7 @@ public class AlertController {
             }
         });
     }
+    
     public void deleteEmployee(Employee employee){
         alertConfirmButton.setOnAction(event -> {
             EmployeeDAO emp = new EmployeeDAO();
@@ -129,6 +132,30 @@ public class AlertController {
         });
     }
 
+    public void deleteProject(Project project){
+        alertConfirmButton.setOnAction(event -> {
+            ProjectDAO pro = new ProjectDAO();
+            if(pro.isDeleteProjectSuccessfule(project)){
+                System.out.println("Project Deleted Successfully");
+                
+                if(dashboardController != null){
+                    System.out.println("Projects updated Successfully");
+                    dashboardController.loadProjects();
+                }
+                
+                Stage stage = (Stage) alertConfirmButton.getScene().getWindow();
+                stage.close();
+
+            } else {
+                Alert alert = new Alert(AlertType.ERROR);
+                
+                alert.setTitle("Error!");
+                alert.setHeaderText(null);
+                alert.setContentText("Project Delete Failed");
+                alert.showAndWait();
+            }
+        });
+    }
     @FXML
     public void initialize() {
         alertCancelButton.setOnAction(event -> {

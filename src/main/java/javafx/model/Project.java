@@ -1,6 +1,5 @@
 package main.java.javafx.model;
 
-import java.sql.Date;
 import java.time.LocalDate;
 
 public class Project {
@@ -10,6 +9,7 @@ public class Project {
     private LocalDate startDate;
     private LocalDate endDate;
     private int departmentId;
+    private Boolean isFinished;
 
     // Getters and Setters
     public int getProjectId() {
@@ -28,7 +28,6 @@ public class Project {
         return startDate;
     }
     
-    
     public LocalDate getEndDate() {
         return endDate;
     }
@@ -37,8 +36,12 @@ public class Project {
         return departmentId;
     }
     
-
+    public Boolean isFinished(){
+        return isFinished;
+    }
     
+
+
     public void setProjectId(int projectId) {
         this.projectId = projectId;
     }
@@ -63,6 +66,10 @@ public class Project {
         this.departmentId = departmentId;
     }
     
+    public void setStatus(Boolean isFinished){
+        this.isFinished = isFinished;
+    }
+
     // Optional: toString for debugging or display purposes
     @Override
     public String toString() {
@@ -72,7 +79,8 @@ public class Project {
         ", description='" + description + '\'' +
         ", startDate='" + startDate + '\'' +
         ", endDate='" + endDate + '\'' +
-        ", departmentId=" + departmentId +
+        ", departmentId=" + departmentId + '\'' +
+        ", isFinished= '" + isFinished +
                '}';
     }
 }

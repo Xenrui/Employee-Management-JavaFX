@@ -11,7 +11,7 @@ import main.java.javafx.model.Department;
 
 public class DepartmentDAO {
 
-    public static String getDepartmentNameById(int departmentId) {
+    public static String getDepartmentNameById(int departmentId){
         String departmentName = null;
         String query = "SELECT department_name FROM departments WHERE department_id = ?";
 

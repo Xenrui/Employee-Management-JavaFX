@@ -7,12 +7,13 @@
 
 .exit{
     -fx-background-color:#ff3434;
-    -fx-background-radius:5px;
+    -fx-background-radius:5px 0 0 5px;
     -fx-cursor:hand;
-}
+} 
 
 .exit:hover{
     -fx-background-color:#c96d6d;
+    -fx-background-radius:5px 0 0 5px;
 }
 
 .login-textfield{
@@ -20,7 +21,6 @@
     -fx-background-radius: 10px;
     -fx-border-color:linear-gradient(to bottom right, #1f1fc1, #00d4ff);
     -fx-border-radius: 10px;
-
     -fx-text-inner-color: #000;
     
 }
@@ -34,6 +34,23 @@
     -fx-text-inner-color: #000;
 }
 
+.login-textarea{
+    -fx-background-color: transparent;
+    -fx-background-radius: 10px;
+    -fx-border-color:linear-gradient(to bottom right, #1f1fc1, #00d4ff);
+    -fx-border-radius: 3px;
+    -fx-text-inner-color: #000;
+    
+}
+
+.login-textarea:focused{
+    -fx-background-color: transparent;
+    -fx-background-radius: 10px;
+    -fx-border-color:linear-gradient(to bottom right, #1f1fc1, #00d4ff);
+    -fx-border-radius: 3px;
+    -fx-border-width: 2px;
+    -fx-text-inner-color: #000;
+}
 
 .button-login{
     -fx-background-color:linear-gradient(to bottom right, #1f1fc1, #00d4ff);
@@ -98,4 +115,105 @@
         -fx-background-color:#076ac8;
         -fx-border-width: 3px;
     
+}
+
+.month-btn{
+    -fx-background-color: transparent;
+    -fx-background-radius: 100px;
+    -fx-border-radius: 100px;
+    -fx-border-color: #fff
+}
+
+.month-btn:hover{
+    -fx-cursor: hand;
+    -fx-background-color: #ffffff57;
+    -fx-background-radius: 100px;
+    -fx-border-radius: 100px;
+    -fx-border-color: #fff
+}
+
+.department-elements{
+ 
+    -fx-background-color:linear-gradient(to top, #03305a, #00d4ff);
+    -fx-border-color: #fff;
+    
+}
+
+.header-background{
+ 
+    -fx-background-color:linear-gradient(to top, #03305a, #1c444b);
+    -fx-border-color: #fff;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 12px;
+    
+}
+
+.setFocus{
+
+}
+
+.setFocus:focused{
+    -fx-focus-color: transparent;
+}
+
+.user-bg{
+    -fx-background-color: transparent;
+    -fx-border-radius: 12px 0 0 12px;
+    -fx-background-radius: 15px 0 0 15px;
+}
+.user-bg:focused{
+    -fx-background-color: transparent;
+    -fx-border-radius: 12px 0 0 12px;
+    -fx-background-radius: 15px 0 0 15px;
+    -fx-focus-color: transparent;
+}
+
+.user-bg > .title{
+    -fx-background-color:#fff;
+    -fx-border-radius: 12px 0 0 12px;
+    -fx-background-radius: 15px 0 0 15px;
+}
+
+.user-bg > .title:hover{
+    -fx-background-color:#bcbbbb;
+    -fx-border-radius: 12px 0 0 12px;
+    -fx-background-radius: 15px 0 0 15px;
+    -fx-cursor:hand;
+}
+
+.user-bg:expanded > .title{
+    -fx-background-color:#bcbbbb;
+    -fx-border-radius: 15px 0 0 0;
+    -fx-background-radius: 15px 0 0 0;
+}
+
+
+.user-bg > .content{
+    -fx-background-color: #fff;
+    -fx-border-radius: 0 0 15px 15px;
+    -fx-background-radius: 0 0 15px 15px;
+}
+
+.user-bg:collapsed > .content{
+    -fx-background-color: transparent;
+}
+
+.logout-btn{
+    -fx-background-color: #fff;
+    -fx-border-radius:  0 0 15px 15px;
+    -fx-background-radius: 0 0 15px 15px;
+}
+
+.logout-btn:hover{
+    -fx-text-fill: #fff;
+    -fx-background-color: #c83535;
+    -fx-border-radius: 0 0 15px 15px;
+    -fx-background-radius: 0 0 15px 15px;
+    -fx-cursor: hand;
+}
+
+.user-icon{
+    -fx-background-color:linear-gradient(to right, rgb(207, 207, 207), #a5e1ed);
+    -fx-border-radius: 12px;
+    -fx-background-radius: 10px 15px 15px 10px;
 }

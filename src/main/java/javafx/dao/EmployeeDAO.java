@@ -1,6 +1,14 @@
 package main.java.javafx.dao;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import main.java.javafx.model.Employee;
@@ -98,10 +106,8 @@ public class EmployeeDAO {
                     employee.setJobTitle(rs.getString("job_title"));
 					employee.setSalary(rs.getFloat("salary"));
 					employee.setDepartmentID(rs.getInt("department_id"));
-
-					DepartmentDAO dept = new DepartmentDAO();
 	
-					employee.setDepartmentName(dept.getDepartmentNameById(employee.getDepartmentID()));
+					employee.setDepartmentName(DepartmentDAO.getDepartmentNameById(employee.getDepartmentID()));
 
 					employees.add(employee);
 
@@ -114,4 +120,30 @@ public class EmployeeDAO {
 		
 		return employees;
 	}
+
+    public Map<String, String> getEmployeesInSameDepartment(int departmentId) {
+        String sql = "SELECT first_name, last_name, job_title FROM employees WHERE department_id = ?";
+        Map<String, String> employeeMap = new HashMap<>();
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, departmentId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    String name = rs.getString("first_name") + " " + rs.getString("last_name");
+                    String jobTitle = rs.getString("job_title");
+
+                    employeeMap.put(name, jobTitle);
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return employeeMap;
+    }
+
 }

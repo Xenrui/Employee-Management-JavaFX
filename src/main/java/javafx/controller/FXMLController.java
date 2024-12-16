@@ -31,9 +31,6 @@ public class FXMLController {
     private Button exit_btn;
 
     @FXML
-    private Button exit_btn1;
-
-    @FXML
     private Button login_btn;
 
     @FXML

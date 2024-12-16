@@ -1,17 +1,11 @@
 package main.java.javafx.controller;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.HPos;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
-import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
@@ -22,24 +16,14 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.DateCell;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TitledPane;
-import javafx.scene.control.Tooltip;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.effect.BoxBlur;
 import javafx.scene.effect.GaussianBlur;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
@@ -431,11 +415,9 @@ public class DashboardController implements Initializable {
         ObservableList<Employee> employees = emp.getAllEmployees();
 
         int numEmp = employees.size();
-        System.out.println(numEmp);
         ObservableList<Department> departments = DepartmentDAO.getActiveDepartments();
 
         int numDep = departments.size();
-        System.out.println(numDep);
         
         numEmployees.setText(String.valueOf(numEmp));
 
@@ -611,7 +593,6 @@ public class DashboardController implements Initializable {
 
             // Add click event to display event details
             dateLabel.setOnMouseClicked(event -> {
-                System.out.println(events);
                 // Retrieve the list of event details for the given date
                 List<String> eventDetails = events.getOrDefault(date, Collections.singletonList("No events on this day."));
                 
@@ -922,7 +903,6 @@ public class DashboardController implements Initializable {
                 editButton.setOnAction(event -> {
                     Employee employee = getTableView().getItems().get(getIndex());
                     editEmployee(event, employee);
-                    System.out.println("Editing employee: " + employee.getFirstName());
                     
                 });
 
@@ -1430,7 +1410,6 @@ public class DashboardController implements Initializable {
     }
 
     private void editProject(MouseEvent event, Project project){
-        System.out.println("Editing details for project: " + project.getProjectName());
 
         try {
             Stage stage = new Stage();

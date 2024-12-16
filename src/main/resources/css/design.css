@@ -96,13 +96,17 @@
     -fx-border-color: linear-gradient(to top, #03305a, #00d4ff); /* Set border color */
     -fx-border-width: 2px; /* Set border width */
     -fx-border-style: solid; /* Set border style */
-    -fx-border-radius: 10px;
+    -fx-border-radius: 0px 0px 10px 10px;
     -fx-padding: 10; 
 }
 
 .pie-chart .chart-title {
     -fx-font-size: 25px; /* Change title font size */
     -fx-text-fill: #333; /* Change title color */
+}
+
+.pie-chart:focused{
+    -fx-focus-color: transparent;
 }
 
 .pie-chart .chart-legend {
@@ -216,4 +220,8 @@
     -fx-background-color:linear-gradient(to right, rgb(207, 207, 207), #a5e1ed);
     -fx-border-radius: 12px;
     -fx-background-radius: 10px 15px 15px 10px;
+}
+
+.category-axis .axis-label, .category-axis .tick-label {
+    -fx-rotate: 45;
 }

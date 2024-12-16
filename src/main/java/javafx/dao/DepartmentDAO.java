@@ -151,15 +151,16 @@ public class DepartmentDAO {
     }
     
     public boolean isAddDepartmentSuccessful(Department department) {
-        String sql = "INSERT INTO departments (department_name, active) SELECT ?, ? WHERE NOT EXISTS (SELECT 1 FROM departments WHERE department_name = ?)";
+        String sql = "INSERT INTO departments (department_name, department_description, active) SELECT ?, ?, ? WHERE NOT EXISTS (SELECT 1 FROM departments WHERE department_name = ?)";
         
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
     
             // Set parameters for the insert statement
             stmt.setString(1, department.getName());
-            stmt.setBoolean(2, department.getActive());
-            stmt.setString(3, department.getName()); // Use the same name to check for existence
+            stmt.setString(2, department.getDescription());
+            stmt.setBoolean(3, department.getActive());
+            stmt.setString(4, department.getName()); // Use the same name to check for existence
     
             // Execute the update
             int rowsAffected = stmt.executeUpdate();

@@ -43,7 +43,6 @@ public class addDepartmentController implements Initializable {
             department.setActive(false);
         }
         
-        System.out.println("ADD MODE");
         DepartmentDAO departmentDAO = new DepartmentDAO();
         if(departmentDAO.isAddDepartmentSuccessful(department)){
             departmentName_textfield.setText("");

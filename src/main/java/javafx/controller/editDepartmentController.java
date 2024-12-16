@@ -79,7 +79,7 @@ public class editDepartmentController implements Initializable {
                 dashboardController.refreshDepartmentDetailsInDetailsController();
                 dashboardController.initialize();
             }
-        
+
             // Close the stage
             Stage stage = (Stage) confirm_btn.getScene().getWindow();
             stage.close();

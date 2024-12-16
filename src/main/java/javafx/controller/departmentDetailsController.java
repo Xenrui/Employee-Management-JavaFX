@@ -409,7 +409,7 @@ public class departmentDetailsController implements Initializable {
         card.setOnMouseEntered(event -> card.setStyle("-fx-border-color: lightgray; -fx-padding: 10; -fx-background-color: #e0e0e0;"));
         card.setOnMouseExited(event -> card.setStyle("-fx-border-color: lightgray; -fx-padding: 10; -fx-background-color: #f9f9f9;"));
         card.setOnMouseClicked(event -> {
-            //
+            dashboardController.viewProjectDetails(event, project);
         });
         return card;
     }

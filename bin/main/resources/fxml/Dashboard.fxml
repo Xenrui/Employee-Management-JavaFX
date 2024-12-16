@@ -245,18 +245,6 @@
                         </Label>
                      </children>
                   </AnchorPane>
-                  <BarChart fx:id="barChart" alternativeColumnFillVisible="true" animated="false" layoutX="24.0" layoutY="124.0" legendVisible="false" prefHeight="445.0" prefWidth="434.0" styleClass="pie-chart" stylesheets="@../css/design.css">
-                    <xAxis>
-                      <CategoryAxis animated="false" side="BOTTOM" fx:id="xAxis">
-                           <tickLabelFont>
-                              <Font name="System Bold" size="10.0" />
-                           </tickLabelFont>
-                        </CategoryAxis>
-                    </xAxis>
-                    <yAxis>
-                      <NumberAxis fx:id="yAxis" minorTickLength="1.0" minorTickVisible="false" side="LEFT" tickLength="1.0" tickUnit="1.0" />
-                    </yAxis>
-                  </BarChart>
                   <AnchorPane layoutX="22.0" layoutY="69.0" prefHeight="70.0" prefWidth="437.0" styleClass="department-elements" stylesheets="@../css/design.css">
                      <children>
                         <Label alignment="CENTER" layoutX="16.0" layoutY="19.0" prefHeight="31.0" prefWidth="401.0" text="Employee Distribution by Department" textAlignment="CENTER" textFill="WHITE">
@@ -266,6 +254,26 @@
                         </Label>
                      </children>
                   </AnchorPane>
+                  <ScrollPane layoutX="22.0" layoutY="138.0" prefHeight="431.0" prefWidth="437.0" styleClass="pie-chart" stylesheets="@../css/design.css" vbarPolicy="NEVER">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="402.0" prefWidth="763.0">
+                           <children>
+                              <BarChart fx:id="barChart" alternativeColumnFillVisible="true" animated="false" layoutX="-141.0" layoutY="-84.0" legendVisible="false" prefHeight="404.0" prefWidth="763.0" stylesheets="@../css/design.css" AnchorPane.bottomAnchor="-2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <xAxis>
+                                  <CategoryAxis side="BOTTOM" styleClass="tick-label" stylesheets="@../css/design.css" fx:id="xAxis">
+                                       <tickLabelFont>
+                                          <Font name="System Bold" size="10.0" />
+                                       </tickLabelFont>
+                                    </CategoryAxis>
+                                </xAxis>
+                                <yAxis>
+                                  <NumberAxis fx:id="yAxis" minorTickCount="0" minorTickLength="1.0" minorTickVisible="false" side="LEFT" tickLength="1.0" tickUnit="1.0" />
+                                </yAxis>
+                              </BarChart>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </ScrollPane>
                </children></AnchorPane>
          </children>
       </AnchorPane>

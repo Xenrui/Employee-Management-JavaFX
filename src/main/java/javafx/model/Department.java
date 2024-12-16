@@ -6,7 +6,6 @@ public class Department {
     private boolean isActive;
     private String description;
 
-
     public void setDepartmentID(int id){
         this.id = id;
     }

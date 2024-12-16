@@ -14,7 +14,7 @@
       <TextArea fx:id="projectDescription_textArea" layoutX="37.0" layoutY="197.0" prefHeight="146.0" prefWidth="686.0" promptText="Project Description" styleClass="login-textarea" stylesheets="@../css/design.css" wrapText="true" />
       <TextField fx:id="projectTitle_textArea" layoutX="37.0" layoutY="139.0" prefHeight="39.0" prefWidth="233.0" promptText="Project Title" styleClass="login-textfield" stylesheets="@../css/design.css" />
       <DatePicker fx:id="deadline_date" layoutX="547.0" layoutY="366.0" prefHeight="39.0" prefWidth="175.0" promptText="Set Deadline" styleClass="login-textarea" stylesheets="@../css/design.css" />
-      <ComboBox fx:id="department_comboBox" layoutX="37.0" layoutY="366.0" prefHeight="39.0" prefWidth="490.0" promptText="Department" styleClass="departmentComboBox" stylesheets="@../css/dashboard.css" />
+      <ComboBox fx:id="department_comboBox" layoutX="37.0" layoutY="366.0" prefHeight="39.0" prefWidth="309.0" promptText="Department" styleClass="departmentComboBox" stylesheets="@../css/dashboard.css" />
       <Button fx:id="confirm_btn" layoutX="574.0" layoutY="466.0" mnemonicParsing="false" onAction="#addProject" prefHeight="42.0" prefWidth="148.0" styleClass="confirmButton" stylesheets="@../css/dashboard.css" text="CONFIRM" textFill="WHITE">
          <font>
             <Font name="Berlin Sans FB Demi Bold" size="19.0" />
@@ -34,5 +34,6 @@
             </Label>
          </children>
       </AnchorPane>
+      <DatePicker fx:id="startDate" layoutX="364.0" layoutY="366.0" prefHeight="39.0" prefWidth="175.0" promptText="Set Startdate" styleClass="login-textarea" stylesheets="@../css/design.css" />
    </children>
 </AnchorPane>

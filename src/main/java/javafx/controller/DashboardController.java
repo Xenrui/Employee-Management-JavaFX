@@ -424,6 +424,7 @@ public class DashboardController implements Initializable {
         });
     }
     
+    
     //DASHBOARD WINDOW
     public void setNumbers(){ //set the total number of employee and active dept in dashboard
         EmployeeDAO emp = new EmployeeDAO();
@@ -1196,29 +1197,36 @@ public class DashboardController implements Initializable {
         EmployeeDAO employeeDAO = new EmployeeDAO();
         List<Employee> employees = employeeDAO.getAllEmployees();
         barChart.getData().clear();
-
+    
         // Prepare a map for department counts
         Map<String, Integer> departmentCount = new HashMap<>();
         for (Employee employee : employees) {
             String department = employee.getDepartmentName();
             departmentCount.put(department, departmentCount.getOrDefault(department, 0) + 1);
         }
-
-        // Create a new series
+    
+        // Create a new series for employees
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         series.setName("Employees");
-
+    
         // Add data to the series
         for (Map.Entry<String, Integer> entry : departmentCount.entrySet()) {
             String department = entry.getKey();
             int count = entry.getValue();
             series.getData().add(new XYChart.Data<>(department, count));
         }
-
+    
         // Add the series to the BarChart
         barChart.getData().add(series);
+    
+        // Set the X-axis and Y-axis labels dynamically (optional)
+        xAxis.setLabel("Departments");
+        yAxis.setLabel("Employee Count");
+    
+        // Apply rotation to the X-axis labels (optional)
+        xAxis.setTickLabelRotation(45);
     }
-
+    
     public void loadDepartmentData(){ //called to refresh the department table(to be deleted)
 
         department_table.setItems(DepartmentDAO.getAllDepartment());
@@ -1338,17 +1346,13 @@ public class DashboardController implements Initializable {
 
         // Project name inside the header
         Label projectNameLabel = new Label(project.getProjectName());
-        projectNameLabel.setStyle("-fx-font-size: 16; -fx-font-weight: bold;");
+        projectNameLabel.setStyle("-fx-font-size: 14; -fx-font-weight: bold;");
         StackPane.setAlignment(projectNameLabel, Pos.CENTER_LEFT); // Align project name to the left
         
         Label departmentProject = new Label();
         Department department = DepartmentDAO.getDepartmentById(project.getDepartmentId());
         departmentProject.setText(department.getName());
-        departmentProject.setStyle("-fx-font-size: 12;");
-
-        HBox labels = new HBox(6);
-        labels.setAlignment(Pos.CENTER_LEFT);
-        labels.getChildren().addAll(projectNameLabel, departmentProject);
+        departmentProject.setStyle("-fx-font-size: 10;");
 
         //Status Label
         Label statusLabel = new Label();
@@ -1360,6 +1364,10 @@ public class DashboardController implements Initializable {
             statusLabel.setStyle("-fx-text-fill: rgb(255,0,0); -fx-font-style: italic;");
         }
         StackPane.setAlignment(statusLabel, Pos.CENTER_RIGHT);
+
+        HBox labels = new HBox(6);
+        labels.setAlignment(Pos.CENTER_LEFT);
+        labels.getChildren().addAll(projectNameLabel, departmentProject);
 
         HBox actionsBox = new HBox(5);
         FontAwesomeIcon editIcon = new FontAwesomeIcon();
@@ -1397,12 +1405,12 @@ public class DashboardController implements Initializable {
         });
 
         actionsBox.setAlignment(Pos.CENTER_RIGHT);
-        actionsBox.getChildren().addAll(statusLabel, editButton, deleteButton);
+        actionsBox.getChildren().addAll(editButton, deleteButton);
 
 
         // Add both project name and edit button to the header
         header.getChildren().addAll(labels, actionsBox);
-
+        header.autosize();
     
         // Add project description
         Label projectDescriptionLabel = new Label(project.getDescription());
@@ -1413,8 +1421,11 @@ public class DashboardController implements Initializable {
         Label endDateLabel = new Label("End Date: " + project.getEndDate());
     
         // Arrange components in the card
-        card.getChildren().addAll(header, projectDescriptionLabel, startDateLabel, endDateLabel);
-        
+        card.getChildren().addAll(header,statusLabel, projectDescriptionLabel, startDateLabel, endDateLabel);
+        card.setStyle("-fx-padding: 15; -fx-background-color: #f9f9f9; -fx-border-color: lightgray; -fx-border-radius: 10; -fx-background-radius: 10;");
+        card.setOnMouseEntered(event -> card.setStyle("-fx-padding: 15; -fx-background-color: lightgray; -fx-border-color: lightgray; -fx-border-radius: 10; -fx-background-radius: 10;"));
+        card.setOnMouseExited(event -> card.setStyle("-fx-padding: 15; -fx-background-color: #f9f9f9; -fx-border-color: lightgray; -fx-border-radius: 10; -fx-background-radius: 10;"));
+        card.setOnMouseClicked(event -> {viewProjectDetails(event, project);});
         return card;
     }
 
@@ -1576,9 +1587,84 @@ public class DashboardController implements Initializable {
 
     }
     
-    //next time
-    private void viewProjectDetails(Project project) {
-        System.out.println("Viewing details for project: " + project.getProjectName());
+    public void viewProjectDetails(MouseEvent event, Project project) {
+        try {
+            // Load Department Details FXML
+            Stage stage = new Stage();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/main/resources/fxml/ProjectDetails.fxml"));
+            Parent root = loader.load();
+
+            // Pass the department to the controller
+            projectDetailsController controller = loader.getController();
+            controller.setDashboardController(this);
+            controller.setProject(project);
+
+            // departmentDetailsControllerInstance = controller;
+
+            // Apply the scene to the stage
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+
+            // Get the current window (parent window)
+            Stage parentStage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            Parent parentRoot = parentStage.getScene().getRoot();
+
+            // Create an overlay pane with a semi-transparent grey background
+            Pane overlay = new Pane();
+            overlay.setStyle("-fx-background-color: rgba(0, 0, 0, 0.3);"); // 30% opacity grey
+            overlay.setPrefSize(parentRoot.getBoundsInParent().getWidth(), parentRoot.getBoundsInParent().getHeight());
+
+            // Add overlay to the parent root
+            if (parentRoot instanceof Pane) {
+                ((Pane) parentRoot).getChildren().add(overlay);
+            } else {
+                StackPane stackPane = new StackPane(parentRoot);
+                stackPane.getChildren().add(overlay);
+                parentStage.getScene().setRoot(stackPane);
+            }
+
+            // Apply blur effect to the parent window
+            GaussianBlur blurEffect = new GaussianBlur(10); // Apply blur
+            parentRoot.setEffect(blurEffect);
+
+            // Restore the parent window when the modal is closed
+            stage.setOnHidden(e -> {
+                parentRoot.setEffect(null); // Remove blur
+                parentRoot.setOpacity(1); // Restore opacity
+                if (parentRoot instanceof Pane) {
+                    ((Pane) parentRoot).getChildren().remove(overlay);
+                } else {
+                    parentStage.getScene().setRoot(parentRoot); // Remove overlay
+                }
+            });
+
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(parentStage);
+
+            // Handle window dragging
+            root.setOnMousePressed((MouseEvent mouseEvent) -> {
+                x = mouseEvent.getSceneX();
+                y = mouseEvent.getSceneY();
+            });
+
+            root.setOnMouseDragged((MouseEvent mouseEvent) -> {
+                stage.setX(mouseEvent.getScreenX() - x);
+                stage.setY(mouseEvent.getScreenY() - y);
+                stage.setOpacity(0.9);
+            });
+
+            root.setOnMouseReleased((MouseEvent mouseEvent) -> {
+                stage.setOpacity(1);
+            });
+
+            // Set stage style to transparent
+            stage.initStyle(StageStyle.TRANSPARENT);
+            stage.show();
+
+            Platform.runLater(root::requestFocus);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

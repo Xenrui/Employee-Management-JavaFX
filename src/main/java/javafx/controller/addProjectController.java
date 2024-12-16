@@ -35,6 +35,9 @@ public class addProjectController implements Initializable {
     private DatePicker deadline_date;
 
     @FXML
+    private DatePicker startDate;
+
+    @FXML
     private ComboBox<Department> department_comboBox;
 
     @FXML
@@ -85,7 +88,7 @@ public class addProjectController implements Initializable {
         Project project = new Project();
         project.setProjectName(projectTitle_textArea.getText());
         project.setDescription(projectDescription_textArea.getText());
-        project.setStartDate(LocalDate.now());
+        // project.setStartDate(LocalDate.now());
         Department selectedDepartment = department_comboBox.getSelectionModel().getSelectedItem();
 
         if (selectedDepartment != null) {
@@ -94,7 +97,15 @@ public class addProjectController implements Initializable {
             System.out.println("Please select a department.");
             return;
         }
-        
+        LocalDate start = startDate.getValue();
+        if (start != null) {
+            project.setStartDate(start); // Deadline from DatePicker is already a LocalDate
+        } else {
+            // Handle the case where the deadline is not set
+            System.out.println("Starting date is not set.");
+            return;
+        }
+
         LocalDate deadline = deadline_date.getValue();
         if (deadline != null) {
             project.setEndDate(deadline); // Deadline from DatePicker is already a LocalDate
@@ -115,7 +126,7 @@ public class addProjectController implements Initializable {
 
             project.setProjectName("");
             project.setDescription("");
-
+            
             Stage stage = (Stage) confirm_btn.getScene().getWindow();
             stage.close();
         }

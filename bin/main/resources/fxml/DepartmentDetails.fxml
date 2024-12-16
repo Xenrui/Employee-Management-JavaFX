@@ -26,7 +26,7 @@
             <Font name="Berlin Sans FB Demi Bold" size="38.0" />
          </font>
       </Label>
-      <Label fx:id="departmentDetailsLabel" alignment="TOP_LEFT" layoutX="62.0" layoutY="177.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="123.0" prefWidth="822.0" text="Label" wrapText="true">
+      <Label fx:id="departmentDetailsLabel" alignment="TOP_LEFT" layoutX="65.0" layoutY="167.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="123.0" prefWidth="836.0" text="Label" textAlignment="JUSTIFY" wrapText="true">
          <font>
             <Font name="Bell MT" size="15.0" />
          </font></Label>

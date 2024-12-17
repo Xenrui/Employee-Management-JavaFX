@@ -24,6 +24,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.GaussianBlur;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
@@ -267,6 +268,8 @@ public class DashboardController implements Initializable {
             
             stage.initStyle(StageStyle.TRANSPARENT);
             logoutButton.getScene().getWindow().hide();
+            Image logoImage = new Image("file:/C:/FILES/Code/Java/EmployeeManagementApp/src/main/resources/images/logoIcon.png");
+            stage.getIcons().add(logoImage);
             stage.setScene(scene);
             stage.show();
             
@@ -489,7 +492,7 @@ public class DashboardController implements Initializable {
         // Label for project name
         Label projectNameLabel = new Label(project.getProjectName());
         projectNameLabel.setStyle("-fx-font-weight: bold;"); // Optional styling for label
-    
+
         // Label for project deadline
         Label deadlineLabel = new Label("Deadline: " + project.getEndDate());
         deadlineLabel.setStyle("-fx-font-style: italic;"); 
@@ -507,14 +510,12 @@ public class DashboardController implements Initializable {
         // Add project name, deadline label, and spacer to the HBox
         deadlineBox.getChildren().addAll(projectNameLabel, spacer, deadlineLabel);
     
-        // Add a click event to open project details pop-up
-        // deadlineBox.setOnMouseClicked(event -> openProjectDetails(event, project));
     
         // Change background color on hover
         deadlineBox.setOnMouseEntered(event -> deadlineBox.setStyle("-fx-border-color: lightgray; -fx-padding: 10; -fx-background-color: #e0e0e0;"));
         deadlineBox.setOnMouseExited(event -> deadlineBox.setStyle("-fx-border-color: lightgray; -fx-padding: 10; -fx-background-color: #f9f9f9;"));
         deadlineBox.setOnMouseClicked(event -> {
-            //
+            viewProjectDetails(event, project);
         });
         return deadlineBox;
     }

@@ -43,14 +43,14 @@
                         <FontAwesomeIcon fill="#114e86" glyphName="HOME" layoutX="160.0" layoutY="145.0" size="7EM" text="" />
                      </children>
                   </AnchorPane>
-                  <AnchorPane layoutX="400.0" prefHeight="500.0" prefWidth="800.0" styleClass="login-bg" stylesheets="@../css/design.css">
+                  <AnchorPane layoutX="400.0" prefHeight="500.0" prefWidth="800.0" styleClass="register-bg" stylesheets="@../css/design.css">
                      <children>
                         <ImageView fx:id="logo" fitHeight="413.0" fitWidth="300.0" layoutX="461.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../images/logoFinal.png" />
                            </image>
                            <effect>
-                              <DropShadow blurType="GAUSSIAN" height="224.54" radius="87.205" spread="0.64" width="126.28">
+                              <DropShadow blurType="GAUSSIAN" height="175.41" radius="74.9225" spread="0.37" width="126.28">
                                  <color>
                                     <Color red="1.0" green="1.0" blue="1.0" />
                                  </color>
@@ -93,7 +93,7 @@
                         <FontAwesomeIcon fill="#114e86" glyphName="USERS" layoutX="165.0" layoutY="145.0" size="6EM" />
                      </children>
                   </AnchorPane>
-                  <ImageView fitHeight="394.0" fitWidth="800.0" layoutX="400.0" layoutY="-85.0" opacity="0.76" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="394.0" fitWidth="800.0" layoutX="400.0" layoutY="-158.0" opacity="0.76" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/auroragraphics-removebg-preview.png" />
                      </image>

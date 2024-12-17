@@ -258,7 +258,7 @@
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="402.0" prefWidth="763.0">
                            <children>
-                              <BarChart fx:id="barChart" alternativeColumnFillVisible="true" animated="false" layoutX="-141.0" layoutY="-84.0" legendVisible="false" prefHeight="404.0" prefWidth="763.0" stylesheets="@../css/design.css" AnchorPane.bottomAnchor="-2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <BarChart fx:id="barChart" alternativeColumnFillVisible="true" animated="false" layoutX="-141.0" layoutY="-84.0" legendVisible="false" prefHeight="404.0" prefWidth="584.0" stylesheets="@../css/design.css" AnchorPane.bottomAnchor="-2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="179.0" AnchorPane.topAnchor="0.0">
                                 <xAxis>
                                   <CategoryAxis side="BOTTOM" styleClass="tick-label" stylesheets="@../css/design.css" fx:id="xAxis">
                                        <tickLabelFont>

@@ -225,3 +225,9 @@
 .category-axis .axis-label, .category-axis .tick-label {
     -fx-rotate: 45;
 }
+
+.register-bg{
+    
+    -fx-background-color:linear-gradient(to bottom, #03305a, #00d4ff, #00d4ff);
+    
+}

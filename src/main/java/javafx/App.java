@@ -43,7 +43,8 @@ public class App extends Application {
         });
         
         stage.initStyle(StageStyle.TRANSPARENT);
-        
+        Image logoImage = new Image("file:/C:/FILES/Code/Java/EmployeeManagementApp/src/main/resources/images/logoIcon.png");
+        stage.getIcons().add(logoImage);
         stage.setScene(scene);
         stage.show();
     }

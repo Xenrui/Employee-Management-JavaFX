@@ -92,8 +92,8 @@ public class FXMLController {
             username_signup.setText("");
             password_signup.setText("");
             email_signup.setText("");
-
         }
+        
         else if(event.getSource() == signup_btn || event.getSource() == login_hyp){
             loginTransition.setToX(0);
             loginTransition.play();
@@ -160,6 +160,9 @@ public class FXMLController {
             });
             
             stage.initStyle(StageStyle.TRANSPARENT);
+            
+            Image logoImage = new Image("file:/C:/FILES/Code/Java/EmployeeManagementApp/src/main/resources/images/logoIcon.png");
+            stage.getIcons().add(logoImage);
             stage.setScene(scene);
             stage.show();
             login_btn.getScene().getWindow().hide();
@@ -182,10 +185,6 @@ public class FXMLController {
             
         }  
     }
-
-    
-
-
 
 
 }

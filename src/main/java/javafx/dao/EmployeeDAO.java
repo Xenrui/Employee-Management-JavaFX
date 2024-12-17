@@ -106,11 +106,9 @@ public class EmployeeDAO {
                     employee.setJobTitle(rs.getString("job_title"));
 					employee.setSalary(rs.getFloat("salary"));
 					employee.setDepartmentID(rs.getInt("department_id"));
-	
 					employee.setDepartmentName(DepartmentDAO.getDepartmentNameById(employee.getDepartmentID()));
 
 					employees.add(employee);
-
 				}
 
 				

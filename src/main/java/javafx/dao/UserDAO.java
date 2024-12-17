@@ -16,25 +16,39 @@ import javafx.scene.control.Alert.AlertType;
 public class UserDAO {
 
     public static String username;
+    private static int adminId; 
 
-    public boolean loginUser(String username, String password){
-        String sql = "SELECT * FROM admins WHERE admin_username = ? AND password = ?";
+    // Method to get the current logged-in admin's ID
+    public static int getAdminId() {
+        return adminId;
+    }
 
-        try(Connection conn = DatabaseConnection.getConnection();
-        PreparedStatement pstmt = conn.prepareStatement(sql)){
+    // Method to set the logged-in admin's ID
+    public static void setAdminId(int adminId) {
+        UserDAO.adminId = adminId;
+    }
+
+    public boolean loginUser(String username, String password) {
+        String sql = "SELECT admin_id FROM admins WHERE admin_username = ? AND password = ?";
+        
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
             pstmt.setString(1, username);
             pstmt.setString(2, password);
-            
 
             ResultSet rs = pstmt.executeQuery();
 
-            if(((ResultSet) rs).next()){
+            if (rs.next()) {
+                // Set the admin_id after successful login
+                adminId = rs.getInt("admin_id");  
+                System.out.println(adminId);
                 return true;
-            }else{
-                return false;
+            } else {
+                return false;  // Invalid credentials
             }
 
-        } catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
             return false;
         }
@@ -93,7 +107,6 @@ public class UserDAO {
                 alert.setContentText("Enter all field blanks!");
                 alert.showAndWait();
                 return false;
-
             }
 
             if(isAccountExisting(username, email)){

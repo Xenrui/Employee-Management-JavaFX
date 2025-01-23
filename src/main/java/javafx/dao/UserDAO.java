@@ -14,7 +14,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
 public class UserDAO {
-
+    
+    //Attributes
     public static String username;
     private static int adminId; 
 

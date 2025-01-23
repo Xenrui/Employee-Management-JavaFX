@@ -17,8 +17,10 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" styleClass="background" stylesheets="@../css/dashboard.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.javafx.controller.DashboardController">
@@ -57,9 +59,17 @@
                   <FontAwesomeIcon fx:id="reportIcon" fill="WHITE" glyphName="FOLDER" textAlignment="RIGHT" wrappingWidth="1.0" />
                </graphic>
             </Button>
+            <Button fx:id="attendance_btn" layoutY="399.0" mnemonicParsing="false" onAction="#navButton" prefHeight="40.0" prefWidth="180.0" styleClass="dashButton" stylesheets="@/main/resources/css/dashboard.css" text="Attendance     " textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font name="Berlin Sans FB Demi Bold" size="16.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIcon fx:id="attendanceIcon" fill="WHITE" glyphName="CLIPBOARD" text="" textAlignment="RIGHT" wrappingWidth="32.999969482421875" />
+               </graphic>
+            </Button>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="dashboard_form" layoutX="180.0" prefHeight="700.0" prefWidth="1020.0">
+      <AnchorPane fx:id="dashboard_form" layoutX="180.0" prefHeight="700.0" prefWidth="1020.0" visible="false">
          <children>
             <AnchorPane prefHeight="110.0" prefWidth="1020.0">
                <children>
@@ -315,7 +325,156 @@
             </AnchorPane>
          </children>
       </AnchorPane>
-      <AnchorPane prefHeight="115.0" prefWidth="1201.0" styleClass="header-background" stylesheets="@../css/design.css">
+      <AnchorPane fx:id="attendanceDash_form" layoutX="180.0" prefHeight="700.0" prefWidth="1020.0">
+         <children>
+            <AnchorPane prefHeight="110.0" prefWidth="1020.0">
+               <children>
+                  <Button fx:id="exit_btn1111" layoutX="974.0" layoutY="-2.0" mnemonicParsing="false" onAction="#exit" prefHeight="32.0" prefWidth="46.0" styleClass="exit" stylesheets="@../css/design.css" textFill="WHITE">
+                     <graphic>
+                        <FontAwesomeIcon fill="WHITE" glyphName="CLOSE" selectionFill="#f25757" />
+                     </graphic>
+                  </Button>
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="attendancePane" layoutY="110.0" prefHeight="590.0" prefWidth="1020.0">
+               <children>
+                  <Button fx:id="checkAttendance_btn" alignment="CENTER" layoutX="376.0" layoutY="34.0" mnemonicParsing="false" onAction="#checkAttendance" prefHeight="34.0" prefWidth="268.0" styleClass="addButton" stylesheets="@../css/dashboard.css" text="TIME IN/OUT" textFill="WHITE">
+                     <font>
+                        <Font name="Berlin Sans FB Demi Bold" size="14.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIcon fx:id="checkAttendance_icon" fill="WHITE" glyphName="CHECK" />
+                     </graphic>
+                  </Button>
+                  <AnchorPane layoutX="603.0" layoutY="92.0" prefHeight="98.0" prefWidth="122.0" styleClass="dashboard-elements" stylesheets="@../css/design.css">
+                     <children>
+                        <Label layoutX="18.0" layoutY="65.0" text="On Time" textFill="WHITE">
+                           <font>
+                              <Font name="Berlin Sans FB Demi Bold" size="15.0" />
+                           </font>
+                        </Label>
+                        <SVGPath content="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0 M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" fill="WHITE" layoutX="86.0" layoutY="24.0" scaleX="2.0" scaleY="2.0" />
+                        <Label fx:id="onTimeNumber" layoutX="15.0" layoutY="11.0" prefHeight="40.0" prefWidth="74.0" text="24" textFill="WHITE">
+                           <font>
+                              <Font name="Berlin Sans FB Demi Bold" size="37.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane layoutX="30.0" layoutY="92.0" prefHeight="474.0" prefWidth="534.0" styleClass="dashboard-elements" stylesheets="@../css/design.css">
+                     <children>
+                        <Label layoutX="22.0" layoutY="20.0" text="Employees" textFill="WHITE">
+                           <font>
+                              <Font name="Berlin Sans FB Demi Bold" size="24.0" />
+                           </font>
+                        </Label>
+                        <ScrollPane fx:id="employeeAttendanceSroll" hbarPolicy="NEVER" layoutX="22.0" layoutY="60.0" prefHeight="390.0" prefWidth="490.0" styleClass="setFocus" stylesheets="@../css/design.css" vbarPolicy="ALWAYS">
+                           <content>
+                              <VBox fx:id="employeeAttendanceVbox" prefHeight="73.0" prefWidth="474.0">
+                                 <padding>
+                                    <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                                 </padding>
+                              </VBox>
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane layoutX="603.0" layoutY="222.0" prefHeight="344.0" prefWidth="386.0" styleClass="dashboard-elements" stylesheets="@../css/design.css">
+                     <children>
+                        <Label layoutX="22.0" layoutY="20.0" text="Attendance Log" textFill="WHITE">
+                           <font>
+                              <Font name="Berlin Sans FB Demi Bold" size="24.0" />
+                           </font>
+                        </Label>
+                        <ScrollPane fx:id="attendanceScrollpane" hbarPolicy="NEVER" layoutX="22.0" layoutY="55.0" prefHeight="270.0" prefWidth="346.0" styleClass="setFocus" stylesheets="@../css/design.css" vbarPolicy="ALWAYS">
+                           <content>
+                              <VBox fx:id="attendanceVbox" prefHeight="74.0" prefWidth="331.0">
+                                 <padding>
+                                    <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                                 </padding>
+                              </VBox>
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane layoutX="735.0" layoutY="92.0" prefHeight="98.0" prefWidth="122.0" styleClass="dashboard-elements" stylesheets="@../css/design.css">
+                     <children>
+                        <Label layoutX="18.0" layoutY="65.0" text="Late" textFill="WHITE">
+                           <font>
+                              <Font name="Berlin Sans FB Demi Bold" size="15.0" />
+                           </font>
+                        </Label>
+                        <SVGPath content="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0 M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" fill="WHITE" layoutX="86.0" layoutY="24.0" scaleX="2.0" scaleY="2.0" />
+                        <Label fx:id="lateNumber" layoutX="15.0" layoutY="11.0" prefHeight="40.0" prefWidth="74.0" text="24" textFill="WHITE">
+                           <font>
+                              <Font name="Berlin Sans FB Demi Bold" size="37.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane layoutX="866.0" layoutY="92.0" prefHeight="98.0" prefWidth="122.0" styleClass="dashboard-elements" stylesheets="@../css/design.css">
+                     <children>
+                        <Label layoutX="18.0" layoutY="65.0" text="Absent" textFill="WHITE">
+                           <font>
+                              <Font name="Berlin Sans FB Demi Bold" size="15.0" />
+                           </font>
+                        </Label>
+                        <SVGPath content="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0 M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" fill="WHITE" layoutX="86.0" layoutY="24.0" scaleX="2.0" scaleY="2.0" />
+                        <Label fx:id="absentNumber" layoutX="15.0" layoutY="11.0" prefHeight="40.0" prefWidth="74.0" text="24" textFill="WHITE">
+                           <font>
+                              <Font name="Berlin Sans FB Demi Bold" size="37.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="checkAttendancePane" layoutY="115.0" prefHeight="585.0" prefWidth="1020.0" visible="false">
+               <children>
+                  <AnchorPane layoutX="19.0" layoutY="19.0" prefHeight="546.0" prefWidth="984.0" styleClass="header-background" stylesheets="@../css/design.css">
+                     <children>
+                        <Pane fx:id="cameraPane" layoutX="24.0" layoutY="49.0" prefHeight="474.0" prefWidth="767.0" />
+                        <Pane fx:id="cameraPane1" layoutX="676.0" layoutY="173.0" prefHeight="199.0" prefWidth="286.0" styleClass="calendar-bg" stylesheets="@../css/design.css">
+                           <children>
+                              <Label fx:id="faceDetected" layoutX="27.0" layoutY="19.0" text="Name">
+                                 <font>
+                                    <Font name="Berlin Sans FB Demi Bold" size="23.0" />
+                                 </font>
+                              </Label>
+                              <Button fx:id="timeIn_btn" layoutX="147.0" layoutY="153.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="130.0" styleClass="addButton" stylesheets="@../css/dashboard.css" text="Time in">
+                                 <font>
+                                    <Font name="Berlin Sans FB Demi Bold" size="11.0" />
+                                 </font>
+                              </Button>
+                              <Label fx:id="idDetected" layoutX="27.0" layoutY="60.0" text="ID">
+                                 <font>
+                                    <Font name="Berlin Sans FB" size="17.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="departmentDetected" layoutX="27.0" layoutY="88.0" prefHeight="22.0" prefWidth="254.0" text="Department">
+                                 <font>
+                                    <Font name="Berlin Sans FB" size="17.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="timeDetected" layoutX="27.0" layoutY="119.0" prefHeight="22.0" prefWidth="170.0" text="Current Time">
+                                 <font>
+                                    <Font name="Berlin Sans FB" size="17.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </Pane>
+                        <Button layoutX="948.0" layoutY="1.0" mnemonicParsing="false" onAction="#releaseCamera" prefHeight="24.0" prefWidth="31.0" styleClass="exit" stylesheets="@../css/design.css">
+                           <graphic>
+                              <SVGPath content="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z" fill="WHITE" stroke="WHITE" />
+                           </graphic>
+                        </Button>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="115.0" prefWidth="1200.0" styleClass="header-background" stylesheets="@../css/design.css">
          <children>
             <AnchorPane prefHeight="31.0" prefWidth="1200.0" styleClass="top-header" stylesheets="@../css/dashboard.css">
                <children>

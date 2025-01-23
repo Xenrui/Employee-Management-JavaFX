@@ -41,22 +41,32 @@ import javafx.scene.shape.Circle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import main.java.javafx.dao.AttendanceDAO;
 import main.java.javafx.dao.DepartmentDAO;
 import main.java.javafx.dao.EmployeeDAO;
 import main.java.javafx.dao.ProjectDAO;
 import main.java.javafx.dao.UserDAO;
+import main.java.javafx.faceRecog.Recognition;
+import main.java.javafx.faceRecog.Training;
+import main.java.javafx.model.Attendance;
 import main.java.javafx.model.Department;
 import main.java.javafx.model.Employee;
 import main.java.javafx.model.Project;
 import java.io.IOException;
 import java.net.URL;
+import java.time.Clock;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+
+import org.bytedeco.librealsense2.global.realsense2;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 
@@ -89,6 +99,9 @@ public class DashboardController implements Initializable {
 
     @FXML
     private Button report_btn;
+
+    @FXML
+    private Button attendance_btn;
 
     @FXML
     private Label user;
@@ -222,6 +235,63 @@ public class DashboardController implements Initializable {
     @FXML
     private FontAwesomeIcon logoutIcon;
 
+    @FXML
+    private FontAwesomeIcon attendanceIcon;
+
+    @FXML
+    private FontAwesomeIcon checkAttendance_icon;
+
+    @FXML
+    private Button checkAttendance_btn;
+
+    @FXML
+    private AnchorPane attendanceDash_form;
+
+    @FXML
+    private AnchorPane checkAttendancePane;
+
+    @FXML
+    private AnchorPane attendancePane;
+
+    @FXML
+    private Pane cameraPane;
+
+    @FXML
+    private Label faceDetected;
+
+    @FXML
+    private Label idDetected;
+
+    @FXML
+    private Label departmentDetected;
+
+    @FXML
+    private Label timeDetected;
+
+    @FXML
+    private Label onTimeNumber;
+
+    @FXML
+    private Label lateNumber;
+
+    @FXML
+    private Label absentNumber;
+
+    @FXML
+    private Button timeIn_btn;
+
+    @FXML
+    private VBox attendanceVbox;
+
+    @FXML
+    private ScrollPane attendanceScrollpane;
+
+    @FXML
+    private VBox employeeAttendanceVbox;
+
+    @FXML
+    private ScrollPane employeeAttendanceSroll;
+
     private Button activeButton = null;
     private FontAwesomeIcon activeIcon = null;
     private AnchorPane activeForm = null;
@@ -231,6 +301,7 @@ public class DashboardController implements Initializable {
     private departmentDetailsController departmentDetailsControllerInstance;
     private YearMonth currentYearMonth = YearMonth.now(); // Store current year and month
     private Map<LocalDate, List<String>> events; // Store event data
+    Recognition recog = new Recognition();
 
 
     //GLOBAL 
@@ -287,7 +358,7 @@ public class DashboardController implements Initializable {
 
         if (activeForm != null) {
             activeForm.setVisible(false);
-        }    
+        }
     
         // Reset the previous active button and icon styles
         if (activeButton != null && activeIcon != null) {
@@ -365,6 +436,20 @@ public class DashboardController implements Initializable {
                 reportIcon.setFill(Color.WHITE);
             }
         });
+
+        attendance_btn.setOnMouseEntered(event -> {
+            if (activeButton != attendance_btn) {
+                attendance_btn.setStyle("-fx-background-color: #f0f0f0; -fx-text-fill: #000; -fx-border-radius: 7px;");
+                attendanceIcon.setFill(Color.BLACK);
+            }
+        });
+
+        attendance_btn.setOnMouseExited(event -> {
+            if (activeButton != attendance_btn) {
+                attendance_btn.setStyle("-fx-background-color: transparent; -fx-border-radius: 7px; -fx-cursor: hand;");
+                attendanceIcon.setFill(Color.WHITE);
+            }
+        });
     
         // Click events to select a button and update the activeButton variable
         dash_btn.setOnMouseClicked(event -> {
@@ -386,6 +471,13 @@ public class DashboardController implements Initializable {
         report_btn.setOnMouseClicked(event -> {
             selectButton(report_btn, reportIcon, reportDash_form);
             loadProjects();
+        });
+        attendance_btn.setOnMouseClicked(event -> {
+            selectButton(attendance_btn, attendanceIcon, attendanceDash_form);
+            attendancePane.setVisible(true);
+            checkAttendancePane.setVisible(false);
+            populateAttendance();
+            trackEmployeeAttendanceForDay(LocalDate.now());
         });
     }
 
@@ -1028,7 +1120,6 @@ public class DashboardController implements Initializable {
 
     public void initialize() { //refresh the departmentContainer
         departmentContainer.getChildren().clear();
-        // Other initialization logic for the dashboard...
         populateDepartments();
     }
     
@@ -1647,6 +1738,228 @@ public class DashboardController implements Initializable {
         }
     }
 
+
+    //ATTENDANCE WINDOW
+    public void checkAttendance() {
+        attendancePane.setVisible(false);
+        checkAttendancePane.setVisible(true);
+        
+        Training train = new Training();
+        train.training();
+        
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
+        
+        try {
+            recog.recog(cameraPane, detectedName -> {
+                if (detectedName != null && !detectedName.isEmpty()) {
+                    
+                    // Get the ID dynamically whenever a face is detected
+                    int idNumber = recog.getIdNumber();
+        
+                    if (idNumber != 0) {
+                        EmployeeDAO emp = new EmployeeDAO();
+                        Employee employee = emp.getEmployeebyId(idNumber);
+        
+                        if (employee != null) {
+                            Platform.runLater(() -> {
+                                faceDetected.setText(employee.getFirstName() + " " + employee.getLastName());
+                                idDetected.setText(Integer.toString(employee.getEmployeeID()));
+                                departmentDetected.setText(employee.getDepartmentName());
+                                timeDetected.setText(LocalTime.now().format(formatter).toString());
+                                
+                                // Save attendance when the button is clicked
+                                timeIn_btn.setOnAction(event -> {
+                                    int employeeID = Integer.parseInt(idDetected.getText());
+                                    LocalDateTime currentTime = LocalDateTime.now();
+                                    String status;
+                                    if(currentTime.toLocalTime().isBefore(LocalTime.of(9, 0))){
+                                        status = "Ontime";
+                                    } else {
+                                        status = "Late";
+                                    }
+                                    Attendance attendance = new Attendance(employeeID, currentTime, status);
+                                    AttendanceDAO dao = new AttendanceDAO();
+
+                                    if (dao.insertAttendance(attendance)) {
+                                        System.out.println("Attendance saved successfully.");
+                                        updateAttendanceLog();
+                                        populateAttendance();
+                                        trackEmployeeAttendanceForDay(LocalDate.now());
+                                        checkAttendancePane.setVisible(false);
+                                        attendancePane.setVisible(true);
+                                        releaseCamera();
+                                    } else {
+                                        System.out.println("Failed to save attendance.");
+                                    }
+                                });
+                            });
+                        } else {
+                            System.out.println("No employee found for ID: " + idNumber);
+                        }
+                    }
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void releaseCamera() {
+        attendancePane.setVisible(true);
+        checkAttendancePane.setVisible(false);
+        if (recog != null) {
+            recog.releaseCamera();
+        }
+    }   
+
+    public void updateAttendanceLog() {
+        // Get today's date formatted as 'yyyy-MM-dd' for fetching today's attendance
+        LocalDate today = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
+        
+        // Query the database for attendance logs for today
+        AttendanceDAO dao = new AttendanceDAO();
+        List<Attendance> attendanceList = dao.getAttendanceForDate(today);
+    
+        // Clear previous entries in the ScrollPane
+        attendanceVbox.getChildren().clear();
+        
+        // Iterate through the attendance list and add them to the ScrollPane
+        for (Attendance attendance : attendanceList) {
+            // Fetch employee information
+            EmployeeDAO empDao = new EmployeeDAO();
+            Employee employee = empDao.getEmployeebyId(attendance.getEmployeeID());
+            
+            if (employee != null) {
+                // Format the attendance log entry (Employee name and check-in time)
+                String logText = employee.getFirstName() + " " + employee.getLastName() + " - " + 
+                                 attendance.getTimestamp().format(formatter);
+                Label logLabel = new Label(logText);
+                
+                // Optionally, style the label
+                logLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5px;");
+                
+                // Add the log entry to the VBox
+                attendanceVbox.getChildren().add(logLabel);
+            }
+        }
+    
+        // Scroll to the bottom to show the latest attendance
+        attendanceVbox.requestFocus();
+    }  
+
+    private void populateAttendance() { // Fetch all employees and display them with attendance status
+
+        employeeAttendanceVbox.getChildren().clear();
+
+        EmployeeDAO emp = new EmployeeDAO();
+        ObservableList<Employee> employees = emp.getAllEmployees(); // Fetch all employees from the database
+    
+        for (Employee employee : employees) {
+            HBox employeeBox = createEmployeeBox(employee); // Create an HBox for each employee
+            employeeAttendanceVbox.getChildren().add(employeeBox); // Add each employee box to the container (VBox or ScrollPane)
+        }
+    }
+    
+    private HBox createEmployeeBox(Employee employee) { // Create HBox for each employee
+        // Create an HBox representing an employee
+        HBox employeeBox = new HBox();
+        employeeBox.setSpacing(10);
+        employeeBox.setPrefHeight(80);
+        employeeBox.setMaxHeight(80);
+        employeeBox.setMinHeight(80);
+        employeeBox.setStyle("-fx-border-color: lightgray; -fx-padding: 10; -fx-background-color: #f9f9f9;");
+        employeeBox.setAlignment(Pos.CENTER_LEFT);
+    
+        // Label for employee name
+        Label employeeLabel = new Label(employee.getFirstName() + " " + employee.getLastName());
+        employeeLabel.setStyle("-fx-font-weight: bold;");
+    
+        // Align the label to the left-center
+        HBox.setHgrow(employeeLabel, Priority.NEVER);  // Ensure the label doesn't grow horizontally
+        employeeLabel.setAlignment(Pos.CENTER_LEFT);
+    
+        // FontAwesomeIcon for on-time/late status
+        FontAwesomeIcon statusIcon = new FontAwesomeIcon();
+        
+        // Query the attendance status for the employee to determine if they are on time or late
+        AttendanceDAO attendanceDAO = new AttendanceDAO();
+        LocalDate today = LocalDate.now();
+        Attendance attendance = attendanceDAO.getEmployeeAttendanceForDate(employee.getEmployeeID(), today);
+        
+        if (attendance != null) {
+            // Check if the employee is on time or late
+            String status = attendance.getStatus(); // Assuming 'ontime' or 'late' is returned from the attendance log
+            if (status.equals("ontime")) {
+                statusIcon.setGlyphName("CHECK_CIRCLE");  // Green check for on-time
+                statusIcon.setFill(Color.GREEN);
+            } else {
+                statusIcon.setGlyphName("TIMES_CIRCLE");  // Red cross for late
+                statusIcon.setFill(Color.RED);
+            }
+        } else {
+            // If no attendance record for today, consider the employee as "Not Present"
+            statusIcon.setGlyphName("TIMES_CIRCLE");  // Red cross for not present
+            statusIcon.setFill(Color.GRAY);
+        }
+        
+        statusIcon.setSize("24");
+    
+        // Create a Region to push the status icon to the right
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);  // Make the spacer grow to take up available space
+    
+        // Add employee label, spacer, and status icon to the HBox
+        employeeBox.getChildren().addAll(employeeLabel, spacer, statusIcon);
+    
+        // Add a click event to open employee details or any other functionality
+        // employeeBox.setOnMouseClicked(event -> openEmployeeDetails(event, employee));
+    
+        // Change background color on hover
+        employeeBox.setOnMouseEntered(event -> employeeBox.setStyle("-fx-border-color: lightgray; -fx-padding: 10; -fx-background-color: #e0e0e0;"));
+        employeeBox.setOnMouseExited(event -> employeeBox.setStyle("-fx-border-color: lightgray; -fx-padding: 10; -fx-background-color: #f9f9f9;"));
+    
+        return employeeBox;
+    }
+    
+    public void trackEmployeeAttendanceForDay(LocalDate date) {
+        // Initialize counts
+        int onTimeCount = 0;
+        int lateCount = 0;
+        int absentCount = 0;
+    
+        // Get all employees
+        EmployeeDAO empDao = new EmployeeDAO();
+        List<Employee> allEmployees = empDao.getAllEmployees();  // Assuming getAllEmployees() returns all employees
+    
+        // Loop through each employee
+        for (Employee employee : allEmployees) {
+            // Fetch the attendance for the employee on the given date
+            AttendanceDAO attendanceDAO = new AttendanceDAO();
+            Attendance attendance = attendanceDAO.getEmployeeAttendanceForDate(employee.getEmployeeID(), date);
+    
+            if (attendance != null) {
+                // If the employee has an attendance record, check the status
+                String status = attendance.getStatus();
+    
+                if ("ontime".equals(status)) {
+                    onTimeCount++;
+                } else if ("late".equals(status)) {
+                    lateCount++;
+                }
+            } else {
+                // If no attendance record, mark as absent
+                absentCount++;
+            }
+        }
+    
+        // Update labels (assuming you have Label objects for ontime, late, and absent counts)
+        onTimeNumber.setText(String.valueOf(onTimeCount));
+        lateNumber.setText(String.valueOf(lateCount));
+        absentNumber.setText(String.valueOf(absentCount));
+    }
+    
+
     @Override
     public void initialize(URL url, ResourceBundle resource){
         
@@ -1654,6 +1967,7 @@ public class DashboardController implements Initializable {
         alterIcons(addDepartment_btn, addDepartment_icon);
         alterIcons(addProject_btn, addProjectIcon);
         alterUserIcon(logoutButton, logoutIcon);
+        alterIcons(checkAttendance_btn, checkAttendance_icon);
         navButton();
         defaultHomeDesign();
         user();
@@ -1664,5 +1978,7 @@ public class DashboardController implements Initializable {
         loadProjects();
         salesChart();
         populateDeadlines();
+        updateAttendanceLog();
+
     }
 }

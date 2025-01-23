@@ -15,33 +15,41 @@ import main.java.javafx.model.Employee;
 
 public class EmployeeDAO {
     
-    public boolean isAddEmployeeSuccessful(Employee employee){
+    public boolean isAddEmployeeSuccessful(Employee employee) {
         String sql = "INSERT INTO employees (first_name, last_name, email, phone_number, hire_date, job_title, department_id) VALUES (?,?,?,?,?,?,?)";
-        
-        try(Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement stmt = conn.prepareStatement(sql)){
-                
-                stmt.setString(1, employee.getFirstName());
-                stmt.setString(2, employee.getLastName());
-                stmt.setString(3, employee.getEmail()); 
-                stmt.setString(4, employee.getPhoneNum());
-                stmt.setDate(5, Date.valueOf(employee.getHireDate()));
-                stmt.setString(6, employee.getJobTitle());
-                stmt.setInt(7, employee.getDepartmentID());
-
-                stmt.executeUpdate();
-				
-
-        } catch (SQLException e){
+    
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+    
+            stmt.setString(1, employee.getFirstName());
+            stmt.setString(2, employee.getLastName());
+            stmt.setString(3, employee.getEmail());
+            stmt.setString(4, employee.getPhoneNum());
+            stmt.setDate(5, Date.valueOf(employee.getHireDate()));
+            stmt.setString(6, employee.getJobTitle());
+            stmt.setInt(7, employee.getDepartmentID());
+    
+            int affectedRows = stmt.executeUpdate();  // Executes the INSERT query
+    
+            // If the insertion was successful, retrieve the generated employeeID
+            if (affectedRows > 0) {
+                try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        int generatedEmployeeID = generatedKeys.getInt(1);  // Get the auto-generated ID (first column)
+                        employee.setEmployeeID(generatedEmployeeID);  // Set the employee ID in the Employee object
+                        return true;  // Employee added successfully
+                    }
+                }
+            }
+        } catch (SQLException e) {
             if (e.getSQLState().equals("23000")) {
-				System.err.println("Error: Duplicate entry for email '" + employee.getEmail() + "'. Please use a different email.");
-
-			} else {
-				e.printStackTrace();
-			}
-            return false;
+                System.err.println("Error: Duplicate entry for email '" + employee.getEmail() + "'. Please use a different email.");
+            } else {
+                e.printStackTrace();
+            }
+            return false;  // Insertion failed
         }
-		return true;
+        return false;  // No rows affected (shouldn't happen if the insert was successful)
     }
 
 	public boolean isUpdateEmployeeSuccessful(Employee employee) {
@@ -118,6 +126,37 @@ public class EmployeeDAO {
 		
 		return employees;
 	}
+
+    public Employee getEmployeebyId(int id) {
+		Employee employee = new Employee();
+		String sql = "SELECT * FROM employees where employee_id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+        PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+        stmt.setInt(1, id);
+
+        try (ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                employee.setEmployeeID(rs.getInt("employee_id"));
+                employee.setFirstName(rs.getString("first_name"));
+                employee.setLastName(rs.getString("last_name"));
+                employee.setEmail(rs.getString("email"));
+                employee.setPhoneNum(rs.getString("phone_number"));
+                employee.setHireDate(rs.getDate("hire_date").toLocalDate());
+                employee.setJobTitle(rs.getString("job_title"));
+                employee.setSalary(rs.getFloat("salary"));
+                employee.setDepartmentID(rs.getInt("department_id"));
+                employee.setDepartmentName(DepartmentDAO.getDepartmentNameById(employee.getDepartmentID()));
+
+            }
+        }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return employee;
+    }
 
     public Map<String, String> getEmployeesInSameDepartment(int departmentId) {
         String sql = "SELECT first_name, last_name, job_title FROM employees WHERE department_id = ?";

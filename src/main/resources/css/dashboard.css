@@ -34,6 +34,7 @@
     -fx-border-color:#397dbd;
     -fx-border-radius: 7px;
     -fx-cursor: hand;
+    -fx-text-fill: #fff;
 }
 
 .addButton:hover{
@@ -41,6 +42,7 @@
     -fx-background-radius:7px;
     -fx-border-color:#397dbd;
     -fx-border-radius: 7px;
+    -fx-text-fill: #397dbd;
 }
 
 .departmentComboBox{

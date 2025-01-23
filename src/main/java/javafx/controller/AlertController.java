@@ -10,6 +10,8 @@ import javafx.stage.Stage;
 import main.java.javafx.dao.DepartmentDAO;
 import main.java.javafx.dao.EmployeeDAO;
 import main.java.javafx.dao.ProjectDAO;
+import main.java.javafx.faceRecog.Capture;
+import main.java.javafx.faceRecog.Training;
 import main.java.javafx.model.Department;
 import main.java.javafx.model.Employee;
 import main.java.javafx.model.Project;
@@ -156,6 +158,26 @@ public class AlertController {
             }
         });
     }
+
+    public void captureFace(String label, String id){
+        
+        alertConfirmButton.setOnAction(event -> {
+            Capture cp = new Capture();
+            Training train = new Training();
+
+            try {
+                cp.capture(label, id);
+                train.training();
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            Stage stage = (Stage) alertConfirmButton.getScene().getWindow();
+            stage.close();
+            
+        });
+    }
+
     @FXML
     public void initialize() {
         alertCancelButton.setOnAction(event -> {

@@ -1,1 +1,6 @@
 .vscode/
+/bin/
+/src/main/resources/photos/
+/src/main/resources/*.yml
+/src/main/resources/*.csv
+/src/main/resources/*.xml

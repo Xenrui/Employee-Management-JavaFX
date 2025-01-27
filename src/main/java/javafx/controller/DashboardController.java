@@ -282,6 +282,8 @@ public class DashboardController implements Initializable {
 
     @FXML
     private VBox attendanceVbox;
+    @FXML
+    private VBox attendanceVbox1;
 
     @FXML
     private ScrollPane attendanceScrollpane;
@@ -456,7 +458,7 @@ public class DashboardController implements Initializable {
             selectButton(dash_btn, dashicon, dashboard_form);
             setNumbers();
             setupCalendar();
-            salesChart();
+            updateAttendanceLogDash();
             populateDeadlines();
         });
         employee_btn.setOnMouseClicked(event -> {
@@ -478,6 +480,7 @@ public class DashboardController implements Initializable {
             checkAttendancePane.setVisible(false);
             populateAttendance();
             trackEmployeeAttendanceForDay(LocalDate.now());
+            updateAttendanceLog();
         });
     }
 
@@ -520,45 +523,6 @@ public class DashboardController implements Initializable {
 
     }
     
-    private void salesChart() { //dummy data for dashboard
-        // Create the X and Y axes
-        NumberAxis xAxis = new NumberAxis();
-        NumberAxis yAxis = new NumberAxis();
-    
-        // Create the LineChart using the axes
-        LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
-        lineChart.setTitle("");
-        
-        // Create a series of data points
-        XYChart.Series<Number, Number> series = new XYChart.Series<>();
-        series.setName("");
-    
-        // Add some data points to the series
-        series.getData().add(new XYChart.Data<>(1, 500));
-        series.getData().add(new XYChart.Data<>(2, 800));
-        series.getData().add(new XYChart.Data<>(3, 600));
-        series.getData().add(new XYChart.Data<>(4, 700));
-        
-        lineChart.setLegendVisible(false);
-        // Add the series to the LineChart
-        lineChart.getData().add(series);
-    
-        // Set the layout position and size for the LineChart
-        lineChart.setPrefSize(600, 400);
-    
-        // Add the LineChart to the AnchorPane
-        salesChart.getChildren().add(lineChart);
-    
-        // Anchor the LineChart to all sides of the AnchorPane to prevent overflow
-        AnchorPane.setTopAnchor(lineChart, 10.0);
-        AnchorPane.setLeftAnchor(lineChart, 0.0);
-        AnchorPane.setRightAnchor(lineChart, 10.0);   // Ensures it doesn't overflow on the right
-        AnchorPane.setBottomAnchor(lineChart, 10.0);   // Ensures it doesn't overflow at the bottom
-    
-        lineChart.prefWidthProperty().bind(salesChart.widthProperty().subtract(20)); // -20 for padding
-        lineChart.prefHeightProperty().bind(salesChart.heightProperty().subtract(20)); // -20 for padding
-    }
-
     private void populateDeadlines() { //call createDeadlineBox for each projects
         deadlineContainer.getChildren().clear();
         ObservableList<Project> projects = ProjectDAO.getAllProjects();
@@ -733,7 +697,42 @@ public class DashboardController implements Initializable {
         calendarGrid.prefHeightProperty().bind(anchorPane.heightProperty());
     }
 
-
+    public void updateAttendanceLogDash() {
+        // Get today's date formatted as 'yyyy-MM-dd' for fetching today's attendance
+        LocalDate today = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
+        
+        // Query the database for attendance logs for today
+        AttendanceDAO dao = new AttendanceDAO();
+        List<Attendance> attendanceList = dao.getAttendanceForDate(today);
+    
+        // Clear previous entries in the ScrollPane
+        attendanceVbox1.getChildren().clear();
+        
+        // Iterate through the attendance list and add them to the ScrollPane
+        for (Attendance attendance : attendanceList) {
+            // Fetch employee information
+            EmployeeDAO empDao = new EmployeeDAO();
+            Employee employee = empDao.getEmployeebyId(attendance.getEmployeeID());
+            
+            if (employee != null) {
+                // Format the attendance log entry (Employee name and check-in time)
+                String logText = employee.getFirstName() + " " + employee.getLastName() + " - " + 
+                                 attendance.getTimestamp().format(formatter);
+                Label logLabel = new Label(logText);
+                
+                // Optionally, style the label
+                logLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5px;");
+                
+                // Add the log entry to the VBox
+                attendanceVbox1.getChildren().add(logLabel);
+            }
+        }
+    
+        // Scroll to the bottom to show the latest attendance
+        attendanceVbox.requestFocus();
+    } 
+  
     //EMPLOYEE WINDOW
     public void loadEmployeeData(){ //called to refresh the employee table
         
@@ -1894,7 +1893,7 @@ public class DashboardController implements Initializable {
                 statusIcon.setGlyphName("CHECK_CIRCLE");  // Green check for on-time
                 statusIcon.setFill(Color.GREEN);
             } else {
-                statusIcon.setGlyphName("TIMES_CIRCLE");  // Red cross for late
+                statusIcon.setGlyphName("EXCLAMATION_CIRCLE");  // Exclamation for late
                 statusIcon.setFill(Color.RED);
             }
         } else {
@@ -1976,9 +1975,9 @@ public class DashboardController implements Initializable {
         setNumbers();
         initialize();
         loadProjects();
-        salesChart();
         populateDeadlines();
         updateAttendanceLog();
-
+        updateAttendanceLogDash();
+        
     }
 }

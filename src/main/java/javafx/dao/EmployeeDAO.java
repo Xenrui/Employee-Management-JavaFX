@@ -79,22 +79,36 @@ public class EmployeeDAO {
         }
 	}
 
-    public boolean isDeleteEmployeeSuccessful(Employee employee){
-        String query = "DELETE FROM employees where employee_id = ?";
-
-        try(Connection conn = DatabaseConnection.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(query)){
-                stmt.setInt(1, employee.getEmployeeID());
-
-                int affectedRows = stmt.executeUpdate();
-                
-                return affectedRows > 0;
-            } catch (SQLException e){
-                e.printStackTrace();
-                return false; 
+    public boolean isDeleteEmployeeSuccessful(Employee employee) {
+        // First delete the employee's attendance records
+        String queryAttendance = "DELETE FROM attendance WHERE employee_id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(queryAttendance)) {
+            stmt.setInt(1, employee.getEmployeeID());
+            int affectedRows = stmt.executeUpdate();
+            
+            if (affectedRows <= 0) {
+                return false;  // If no rows are affected, return false
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    
+        // Then delete the employee record from the employees table
+        String queryEmployee = "DELETE FROM employees WHERE employee_id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(queryEmployee)) {
+            stmt.setInt(1, employee.getEmployeeID());
+            int affectedRows = stmt.executeUpdate();
+            
+            return affectedRows > 0;  // Return true if employee deletion was successful
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
-
+    
     public ObservableList<Employee> getAllEmployees() {
 		ObservableList<Employee> employees = FXCollections.observableArrayList();
 		String sql = "SELECT * FROM employees";

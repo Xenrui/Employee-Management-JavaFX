@@ -69,7 +69,7 @@
             </Button>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="dashboard_form" layoutX="180.0" prefHeight="700.0" prefWidth="1020.0" visible="false">
+      <AnchorPane fx:id="dashboard_form" layoutX="180.0" prefHeight="700.0" prefWidth="1020.0">
          <children>
             <AnchorPane prefHeight="110.0" prefWidth="1020.0">
                <children>
@@ -164,13 +164,22 @@
                         </Button>
                      </children>
                   </AnchorPane>
-                  <AnchorPane fx:id="salesChart" layoutX="37.0" layoutY="32.0" prefHeight="279.0" prefWidth="354.0" styleClass="calendar-bg" stylesheets="@../css/design.css">
+                  <AnchorPane layoutX="37.0" layoutY="32.0" prefHeight="281.0" prefWidth="354.0" styleClass="dashboard-elements" stylesheets="@../css/design.css">
                      <children>
-                        <Label layoutX="14.0" layoutY="14.0" text="Sales Report">
+                        <Label layoutX="22.0" layoutY="20.0" text="Attendance Log" textFill="WHITE">
                            <font>
-                              <Font name="Berlin Sans FB Demi Bold" size="20.0" />
+                              <Font name="Berlin Sans FB Demi Bold" size="24.0" />
                            </font>
                         </Label>
+                        <ScrollPane fx:id="attendanceScrollpane1" hbarPolicy="NEVER" layoutX="22.0" layoutY="55.0" prefHeight="199.0" prefWidth="311.0" styleClass="setFocus" stylesheets="@../css/design.css" vbarPolicy="ALWAYS">
+                           <content>
+                              <VBox fx:id="attendanceVbox1" prefHeight="74.0" prefWidth="296.0">
+                                 <padding>
+                                    <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                                 </padding>
+                              </VBox>
+                           </content>
+                        </ScrollPane>
                      </children>
                   </AnchorPane>
                </children>
@@ -325,7 +334,7 @@
             </AnchorPane>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="attendanceDash_form" layoutX="180.0" prefHeight="700.0" prefWidth="1020.0">
+      <AnchorPane fx:id="attendanceDash_form" layoutX="180.0" prefHeight="700.0" prefWidth="1020.0" visible="false">
          <children>
             <AnchorPane prefHeight="110.0" prefWidth="1020.0">
                <children>

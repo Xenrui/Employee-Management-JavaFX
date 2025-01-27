@@ -1,5 +1,7 @@
 package main.java.javafx.controller;
 
+import java.io.File;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -116,6 +118,28 @@ public class AlertController {
         alertConfirmButton.setOnAction(event -> {
             EmployeeDAO emp = new EmployeeDAO();
             if(emp.isDeleteEmployeeSuccessful(employee)){
+                String basePath = System.getProperty("user.dir");
+                String photoDirectory = basePath + "\\src\\main\\resources\\photos\\";
+
+                // Create a file object for the directory
+                File directory = new File(photoDirectory);
+
+                // Get the list of all files in the directory
+                File[] files = directory.listFiles();
+
+                if (files != null) {
+                    for (File file : files) {
+                        // Check if the file name starts with the employee's name and person ID
+                        if (file.getName().startsWith(employee.getFirstName() + "." + employee.getEmployeeID() + ".")) {
+                            if (file.delete()) {
+                                System.out.println("Deleted photo: " + file.getAbsolutePath());
+                            } else {
+                                System.out.println("Failed to delete photo: " + file.getAbsolutePath());
+                            }
+                        }
+                    }
+                }
+
                 System.out.println("Employee Deleted Successfully: " + employee.getFirstName() + " " + employee.getLastName());
                 if(dashboardController != null){
                     dashboardController.loadEmployeeData();
